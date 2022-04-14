@@ -28,21 +28,25 @@ fun ResidentScreen() {
                 .fillMaxWidth(0.98f) ,
             horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
 
-
             val searchValue = remember { mutableStateOf(TextFieldValue()) }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
+
 
                 AddNewButton(buttonOnClick = {
 
                 })
 
                 Spacer(modifier = Modifier.weight(0.6f))
+
                 SearchBar(value = searchValue.value, onChangeValue = {
 
-                }, searchButtonOnClick = {
+                },
+                searchButtonOnClick = {
 
                 })
+
+
             }
 
         }
