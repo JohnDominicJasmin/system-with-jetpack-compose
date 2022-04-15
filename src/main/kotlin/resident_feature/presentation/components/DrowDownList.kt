@@ -36,6 +36,7 @@ fun DropDownList(
             DrawableResource.TrailingIconDown.resource
 
         Text(
+            modifier = Modifier.padding(start = 4.dp),
             text = labelText,
             color = Gray300,
             fontSize = MaterialTheme.typography.button.fontSize,

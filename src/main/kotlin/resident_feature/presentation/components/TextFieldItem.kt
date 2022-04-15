@@ -1,9 +1,6 @@
 package resident_feature.presentation.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import resident_feature.presentation.theme.Black600
+import resident_feature.presentation.theme.Black700
 import resident_feature.presentation.theme.ErrorColor
 import resident_feature.presentation.theme.Gray300
 
@@ -25,9 +22,11 @@ fun TextFieldItem(
     modifier : Modifier,
     errorMessage: String = "",
     labelText: String,
+    placeholder: @Composable (() -> Unit)? = null,
     textFieldValue: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
-    clearIconOnClick: () -> Unit
+
+
 ) {
     val hasError = errorMessage.isNotEmpty()
 
@@ -39,6 +38,7 @@ fun TextFieldItem(
 
 
         Text(
+            modifier = Modifier.padding(start = 4.dp),
             text = labelText,
             color = Gray300,
             fontSize = MaterialTheme.typography.button.fontSize,
@@ -52,10 +52,11 @@ fun TextFieldItem(
             onValueChange = onValueChange,
             singleLine = true,
             maxLines = 1,
+            placeholder = placeholder,
     isError = hasError,
     colors = TextFieldDefaults.textFieldColors(
         textColor = Color.White,
-        backgroundColor = Black600,
+        backgroundColor = Black700,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         cursorColor = Color.White,

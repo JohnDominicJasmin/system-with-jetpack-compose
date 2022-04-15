@@ -50,7 +50,10 @@ fun ResidentScreen() {
             }
 
 
-            Row(verticalAlignment = Alignment.CenterVertically){
+            Row(verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth(0.98f)
+                    .padding(top = 25.dp)){
                 InputArea(modifier = Modifier.weight(5.0f))
             }
 

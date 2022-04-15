@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import resident_feature.presentation.theme.Black600
+import resident_feature.presentation.theme.Black700
 import resident_feature.presentation.theme.Blue700
 import resident_feature.presentation.theme.ErrorColor
 import resident_feature.presentation.theme.Gray300
@@ -46,7 +46,7 @@ fun SearchBar(value: TextFieldValue, onChangeValue: (TextFieldValue) -> Unit, se
             maxLines = 1,
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.White,
-                backgroundColor = Black600,
+                backgroundColor = Black700,
                 focusedIndicatorColor = Transparent,
                 unfocusedIndicatorColor = Transparent,
                 cursorColor = Color.White,
