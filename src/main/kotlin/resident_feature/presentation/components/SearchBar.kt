@@ -19,29 +19,31 @@ import androidx.compose.ui.unit.dp
 import resident_feature.presentation.theme.Black600
 import resident_feature.presentation.theme.Blue700
 import resident_feature.presentation.theme.ErrorColor
-import resident_feature.presentation.theme.White300
+import resident_feature.presentation.theme.Gray300
 
 @Composable
 fun SearchBar(value: TextFieldValue, onChangeValue: (TextFieldValue) -> Unit, searchButtonOnClick: () -> Unit) {
 
 
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.wrapContentSize()) {
-        val height = 46.dp
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.wrapContentSize()){
+
+        Text(
+            modifier = Modifier.padding(start = 4.dp),
+            text = "Search",
+            color = Gray300,
+            fontSize = MaterialTheme.typography.button.fontSize,
+            textAlign = TextAlign.Center
+        )
+
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.height(50.dp)) {
+
         TextField(
-            modifier = Modifier.height(height),
+            modifier = Modifier.fillMaxHeight().width(350.dp),
             value = value,
             shape = RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp),
             onValueChange = onChangeValue,
             singleLine = true,
             maxLines = 1,
-            label = {
-                Text(
-                    text = "Email",
-                    color = White300,
-                    fontSize = MaterialTheme.typography.button.fontSize,
-                    textAlign = TextAlign.Center
-                )
-            },
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.White,
                 backgroundColor = Black600,
@@ -60,13 +62,14 @@ fun SearchBar(value: TextFieldValue, onChangeValue: (TextFieldValue) -> Unit, se
         Button(
             onClick = searchButtonOnClick,
             colors = ButtonDefaults.buttonColors(backgroundColor = Blue700, contentColor = Color.White),
-            modifier = Modifier.height(height).width(50.dp),
-            shape = RoundedCornerShape(topStart = 0.dp, bottomStart = 0.dp, topEnd = 12.dp, bottomEnd = 12.dp), contentPadding = PaddingValues(all = 2.dp)
+            modifier = Modifier.fillMaxHeight().width(50.dp),
+            shape = RoundedCornerShape(topStart = 0.dp, bottomStart = 0.dp, topEnd = 12.dp, bottomEnd = 12.dp),
+            contentPadding = PaddingValues(all = 2.dp)
         ) {
             Icon(imageVector = Icons.Default.Search, contentDescription = "Search Button Icon")
         }
 
-
+    }
     }
 }
 

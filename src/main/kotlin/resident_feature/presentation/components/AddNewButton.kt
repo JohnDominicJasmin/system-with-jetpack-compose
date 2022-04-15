@@ -2,7 +2,7 @@ package resident_feature.presentation.components
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
@@ -23,7 +23,7 @@ fun AddNewButton( buttonOnClick: () -> Unit) {
       onClick = buttonOnClick,
       colors = ButtonDefaults.buttonColors(backgroundColor = Blue700, contentColor = Color.White),
       modifier = Modifier
-         .wrapContentHeight()
+         .size(height = 50.dp, width = 220.dp)
          .shadow(elevation = 12.dp, shape = MaterialTheme.shapes.medium, ),
       shape = MaterialTheme.shape.medium) {
 
@@ -32,7 +32,7 @@ fun AddNewButton( buttonOnClick: () -> Unit) {
          color = Color.White,
          style = MaterialTheme.typography.button,
          fontWeight = FontWeight.SemiBold,
-         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp, start = 20.dp, end = 20.dp),
+         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp, start = 30.dp, end = 30.dp),
 
       )
 

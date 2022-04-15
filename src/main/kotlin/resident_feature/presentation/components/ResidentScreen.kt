@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import resident_feature.presentation.theme.Black800
 
 @Composable
@@ -25,7 +26,7 @@ fun ResidentScreen() {
 
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.98f) ,
+                .fillMaxWidth(0.98f).padding(top = 15.dp) ,
             horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
 
             val searchValue = remember { mutableStateOf(TextFieldValue()) }
@@ -40,14 +41,25 @@ fun ResidentScreen() {
                 Spacer(modifier = Modifier.weight(0.6f))
 
                 SearchBar(value = searchValue.value, onChangeValue = {
-
+                    searchValue.value = it
                 },
                 searchButtonOnClick = {
 
                 })
 
-
             }
+
+
+            Row(verticalAlignment = Alignment.CenterVertically){
+                InputArea(modifier = Modifier.weight(5.0f))
+            }
+
+
+
+
+
+
+
 
         }
 
