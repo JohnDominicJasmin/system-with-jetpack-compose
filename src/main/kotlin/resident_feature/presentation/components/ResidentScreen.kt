@@ -24,14 +24,21 @@ fun ResidentScreen() {
         contentAlignment = Alignment.TopCenter
     ) {
 
+
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.98f).padding(top = 15.dp) ,
-            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                .fillMaxWidth(0.99f).padding(top = 15.dp),
+            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
+        ) {
 
             val searchValue = remember { mutableStateOf(TextFieldValue()) }
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth(0.99f)
+            ) {
 
 
                 AddNewButton(buttonOnClick = {
@@ -43,25 +50,29 @@ fun ResidentScreen() {
                 SearchBar(value = searchValue.value, onChangeValue = {
                     searchValue.value = it
                 },
-                searchButtonOnClick = {
+                    searchButtonOnClick = {
 
-                })
+                    })
 
             }
 
 
-            Row(verticalAlignment = Alignment.CenterVertically,
+            Row(
+                verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .fillMaxWidth(0.98f)
-                    .padding(top = 25.dp)){
-                InputArea(modifier = Modifier.weight(5.0f))
+                    .fillMaxWidth(0.99f)
+                    .padding(top = 25.dp)
+            ) {
+
+                InputArea(modifier = Modifier.weight(0.83f))
+                SelectProfilePictureArea(
+                    modifier = Modifier.padding(start = 18.dp, top = 20.dp).weight(0.17f),
+                    browseButtonOnClick = {},
+                    saveButtonOnClick = {},
+                    updateButtonOnClick = {})
+
+
             }
-
-
-
-
-
-
 
 
         }
