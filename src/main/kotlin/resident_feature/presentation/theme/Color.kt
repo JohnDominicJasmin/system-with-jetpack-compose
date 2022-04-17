@@ -14,7 +14,7 @@ val Blue600 = Color(0xFF0088f8)
 val Blue700 = Color(0xFF0076e4)
 val Blue800 = Color(0xFF0664d2)
 val Blue900 = Color(0xFF0a45b3)
-
+val Blue950 = Color(0xFF27517A)
 
 val White50 = Color(0xFFffffff)
 val White100 = Color(0xFFf2f3f4)
@@ -29,6 +29,7 @@ val Black700 = Color(0xFF616161)
 val Black800 = Color(0xFF424242)
 val Black900 = Color(0xFF212121)
 
+val Gray200 = Color(0xFFD4D4D4)
 val Gray600 = Color(0xFF7b7b7b)
 val Gray300 = Color(0xFFD8D8D8)
 

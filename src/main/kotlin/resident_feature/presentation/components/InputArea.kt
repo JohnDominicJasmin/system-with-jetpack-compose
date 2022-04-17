@@ -1,6 +1,9 @@
 package resident_feature.presentation.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -18,13 +21,16 @@ import resident_feature.presentation.theme.Gray300
 fun InputArea(modifier: Modifier) {
 
     val textFieldValue = remember { mutableStateOf(TextFieldValue()) }
+
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
 
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
 
 
             TextFieldItem(

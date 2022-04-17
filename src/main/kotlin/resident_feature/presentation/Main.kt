@@ -6,12 +6,19 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import resident_feature.presentation.components.ResidentScreen
+import java.awt.Dimension
 
 
 fun main() = application {
 
-    val windowState = rememberWindowState(placement = WindowPlacement.Maximized)
-    Window(onCloseRequest = ::exitApplication, state = windowState, title = "Barangay System", resizable = true) {
+    Window(
+        onCloseRequest = ::exitApplication,
+        title = "Barangay System",
+        resizable = true,
+        state = rememberWindowState(placement = WindowPlacement.Maximized)
+    ) {
+
+        this.window.minimumSize = Dimension(1200,700)
         MaterialTheme {
             ResidentScreen()
 
