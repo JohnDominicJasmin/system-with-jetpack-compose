@@ -54,7 +54,6 @@ fun DropDownList(
             onClick = { expanded = !expanded }) {
             Text(
                 text = items[selectedIndex],
-                color = Color.White,
                 modifier = Modifier.weight(0.9f)
             )
             Icon(painter = painterResource(icon), contentDescription = "Expand Icon Indicator")

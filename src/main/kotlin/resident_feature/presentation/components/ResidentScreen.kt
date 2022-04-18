@@ -74,6 +74,11 @@ fun ResidentScreen() {
 
             }
 
+            TableItemsArea(
+                modifier = Modifier
+                    .fillMaxWidth(0.99f)
+                    .padding(top = 25.dp))
+
 
         }
 
