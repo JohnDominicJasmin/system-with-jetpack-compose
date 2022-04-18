@@ -7,6 +7,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import resident_feature.presentation.components.ResidentScreen
 import java.awt.Dimension
+import java.awt.Toolkit
 
 
 fun main() = application {
@@ -15,10 +16,17 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "Barangay System",
         resizable = true,
-        state = rememberWindowState(placement = WindowPlacement.Maximized)
-    ) {
+        state = rememberWindowState(placement = WindowPlacement.Maximized)) {
 
-        this.window.minimumSize = Dimension(1200,700)
+        val screenSize: Dimension = Toolkit.getDefaultToolkit().screenSize
+
+        with(this.window){
+            val  currentHeight =  screenSize.height
+            val currentWidth =  screenSize.width
+            minimumSize = Dimension(currentWidth,currentHeight)
+        }
+
+
         MaterialTheme {
             ResidentScreen()
 
