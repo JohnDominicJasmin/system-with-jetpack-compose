@@ -9,4 +9,9 @@ object Constants {
     const val VOTER_ROW_WEIGHT = 0.05f
     const val ADDRESS_ROW_WEIGHT = 0.13f
     const val ICONS_ROW_WEIGHT = 0.04f
+    const val CONNECTION_URL = "jdbc:sqlite:system_with_jetpack_compose_desktop.db"
+    const val REGEX_NUMBER_VALUE="[0-9]"
+    const val REGEX_SPECIAL_CHARACTERS_VALUE = "[!#$%&*()_+=|<>?{}\\[\\]~]"
+    const val USER_INPUT_MINIMUM_NUMBER_OF_CHARACTERS = 3
+    const val NUMBER_OF_CHARACTERS_CONTACT_NUMBER = 11
 }
