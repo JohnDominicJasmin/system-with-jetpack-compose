@@ -3,11 +3,13 @@ package resident_feature.data.data_source
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import resident_feature.common.Constants.CONNECTION_URL
+import resident_feature.domain.exceptions.ResidentsAuthentication
 import resident_feature.domain.model.Resident
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.PreparedStatement
 import java.sql.Statement
+
 class ResidentDaoImpl(
     private val connection: Connection = DriverManager.getConnection(CONNECTION_URL)
 ) : ResidentDao {
@@ -49,105 +51,131 @@ class ResidentDaoImpl(
         connection.close()
 
     }
-    override suspend fun addResident(resident: Resident): Boolean {
 
-        val statement: PreparedStatement = connection.prepareStatement(
-            "INSERT INTO Residents (FULLNAME, SUFFIX, SEX, BIRTHDATE, AGE, OCCUPATION, RELIGION, EDUCATIONAL_ATTAINMENT, PUROK, ADDRESS, CIVIL_STATUS, REGISTERED_VOTER, CONTACT_NUMBER, CITIZENSHIP, SENIOR_CITIZEN, IMAGE_PATH, IMAGE_NAME)\n" +
-                    "VALUES (? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? )"
-        )
+    override suspend fun addResident(resident: Resident) {
 
-        with(statement) {
-            with(resident) {
-                setString(1, fullName)
-                setString(2, suffix)
-                setString(3, sex)
-                setString(4, dateOfBirth)
-                setString(5, age)
-                setString(6, occupation)
-                setString(7, religion)
-                setString(8, educationalAttainment)
-                setString(9, purok)
-                setString(10, address)
-                setString(11, civilStatus)
-                setString(12, voter)
-                setString(13, contactNumber)
-                setString(14, citizenship)
-                setString(15, seniorCitizen)
-                setString(16, localImagePath)
-                setString(17, imageName)
+
+        try {
+            val statement: PreparedStatement = connection.prepareStatement(
+                "INSERT INTO Residents (FULLNAME, SUFFIX, SEX, BIRTHDATE, AGE, OCCUPATION, RELIGION, EDUCATIONAL_ATTAINMENT, PUROK, ADDRESS, CIVIL_STATUS, REGISTERED_VOTER, CONTACT_NUMBER, CITIZENSHIP, SENIOR_CITIZEN, IMAGE_PATH, IMAGE_NAME)\n" +
+                        "VALUES (? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? )"
+            )
+
+            with(statement) {
+                with(resident) {
+                    setString(1, fullName)
+                    setString(2, suffix)
+                    setString(3, sex)
+                    setString(4, dateOfBirth)
+                    setString(5, age)
+                    setString(6, occupation)
+                    setString(7, religion)
+                    setString(8, educationalAttainment)
+                    setString(9, purok)
+                    setString(10, address)
+                    setString(11, civilStatus)
+                    setString(12, voter)
+                    setString(13, contactNumber)
+                    setString(14, citizenship)
+                    setString(15, seniorCitizen)
+                    setString(16, localImagePath)
+                    setString(17, imageName)
+                }
             }
-        }
 
-        return (statement.executeUpdate() > 0).also {
-            statement.close()
-            connection.close()
+            if (statement.executeUpdate() == 0) {
+                throw RuntimeException("Failed to add resident")
+            }
+
+        } catch (e: Exception) {
+            throw ResidentsAuthentication.ResidentsAuthentication(message = e.message ?: "Failed to add resident")
         }
 
     }
-    override suspend fun updateResident(resident: Resident):Boolean {
-        val statement: PreparedStatement =
-            connection.prepareStatement("UPDATE Residents SET FULLNAME = ?, SUFFIX = ?, SEX = ?, BIRTHDATE = ?, AGE = ?, OCCUPATION = ?, RELIGION = ?, EDUCATIONAL_ATTAINMENT = ?, PUROK = ?, ADDRESS = ?, CIVIL_STATUS = ?, REGISTERED_VOTER = ?, CONTACT_NUMBER = ?, CITIZENSHIP = ?, SENIOR_CITIZEN = ?, IMAGE_PATH = ?, IMAGE_NAME = ? WHERE ID = ?")
+
+    override suspend fun updateResident(resident: Resident) {
+
+        try {
+            val statement: PreparedStatement =
+                connection.prepareStatement("UPDATE Residents SET FULLNAME = ?, SUFFIX = ?, SEX = ?, BIRTHDATE = ?, AGE = ?, OCCUPATION = ?, RELIGION = ?, EDUCATIONAL_ATTAINMENT = ?, PUROK = ?, ADDRESS = ?, CIVIL_STATUS = ?, REGISTERED_VOTER = ?, CONTACT_NUMBER = ?, CITIZENSHIP = ?, SENIOR_CITIZEN = ?, IMAGE_PATH = ?, IMAGE_NAME = ? WHERE ID = ?")
 
 
-        with(statement){
-            with(resident){
-                setString(1, fullName)
-                setString(2, suffix)
-                setString(3, sex)
-                setString(4, dateOfBirth)
-                setString(5, age)
-                setString(6, occupation)
-                setString(7, religion)
-                setString(8, educationalAttainment)
-                setString(9, purok)
-                setString(10, address)
-                setString(11, civilStatus)
-                setString(12, voter)
-                setString(13, contactNumber)
-                setString(14, citizenship)
-                setString(15, seniorCitizen)
-                setString(16, localImagePath)
-                setString(17, imageName)
-                setString(18, id)
+            with(statement) {
+                with(resident) {
+                    setString(1, fullName)
+                    setString(2, suffix)
+                    setString(3, sex)
+                    setString(4, dateOfBirth)
+                    setString(5, age)
+                    setString(6, occupation)
+                    setString(7, religion)
+                    setString(8, educationalAttainment)
+                    setString(9, purok)
+                    setString(10, address)
+                    setString(11, civilStatus)
+                    setString(12, voter)
+                    setString(13, contactNumber)
+                    setString(14, citizenship)
+                    setString(15, seniorCitizen)
+                    setString(16, localImagePath)
+                    setString(17, imageName)
+                    setString(18, id)
+                }
             }
-        }
 
-        return (statement.executeUpdate() > 0).also {
-            statement.close()
-            connection.close()
-        }
-    }
-    override suspend fun deleteResident(resident: Resident): Boolean {
-        val statement: PreparedStatement =
-            connection.prepareStatement("DELETE FROM Residents where ID = ?")
-
-        with(statement){
-            with(resident){
-                setString(1, id)
+            if(statement.executeUpdate() == 0){
+                throw RuntimeException("Failed to Update Resident")
             }
-        }
-
-        return (statement.executeUpdate() > 0).also {
-            statement.close()
-            connection.close()
+        }catch (e: Exception) {
+            throw ResidentsAuthentication.ResidentsAuthentication(message = e.message ?: "Failed to Update Resident")
         }
     }
 
-    override suspend fun archiveResident(resident: Resident): Boolean {
+    override suspend fun deleteResident(resident: Resident) {
 
-        val statement: PreparedStatement =
-        connection.prepareStatement("INSERT INTO ResidentsArchive SELECT * FROM Residents WHERE FULLNAME = ?; DELETE FROM Residents WHERE FULLNAME = ?")
 
-        with(statement){
-            with(resident){
-              setString(1, fullName)
-              setString(2, fullName)
+        try {
+            val statement: PreparedStatement =
+                connection.prepareStatement("DELETE FROM Residents WHERE ID = ?")
+
+            with(statement) {
+                with(resident) {
+                    setString(1, id)
+                }
             }
+
+            if (statement.executeUpdate() == 0) {
+                throw RuntimeException("Failed to Delete Resident")
+            }
+
+        } catch (e: Exception) {
+            throw ResidentsAuthentication.ResidentsAuthentication(message = e.message ?: "Failed to Delete Resident")
         }
 
-        return (statement.executeUpdate() > 0).also {
-            statement.close()
-            connection.close()
+
+    }
+
+    override suspend fun archiveResident(resident: Resident) {
+
+        try {
+            val statement: PreparedStatement =
+                connection.prepareStatement("INSERT INTO ResidentsArchive SELECT * FROM Residents WHERE FULLNAME = ?; DELETE FROM Residents WHERE FULLNAME = ?")
+
+            with(statement) {
+                with(resident) {
+                    setString(1, fullName)
+                    setString(2, fullName)
+                }
+            }
+
+            if (statement.executeUpdate() == 0) {
+                throw RuntimeException("Failed to Archive Resident")
+            }
+
+        }catch (e: Exception) {
+            throw ResidentsAuthentication.ResidentsAuthentication(message = e.message ?: "Failed to Archive Resident")
         }
+
+
     }
 }

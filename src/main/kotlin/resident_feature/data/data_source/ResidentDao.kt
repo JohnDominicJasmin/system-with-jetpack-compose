@@ -6,10 +6,10 @@ import resident_feature.domain.model.Resident
 interface ResidentDao {
 
     fun getResidents(): Flow<List<Resident>>
-    suspend fun addResident(resident: Resident): Boolean
-    suspend fun updateResident(resident: Resident): Boolean
-    suspend fun deleteResident(resident: Resident): Boolean
-    suspend fun archiveResident(resident: Resident): Boolean
+    suspend fun addResident(resident: Resident)
+    suspend fun updateResident(resident: Resident)
+    suspend fun deleteResident(resident: Resident)
+    suspend fun archiveResident(resident: Resident)
     
 
 
