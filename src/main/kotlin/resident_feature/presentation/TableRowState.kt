@@ -11,7 +11,6 @@ data class TableRowState(
     val address: String
 )
 
-
 sealed class CivilStatus{
     object Single: CivilStatus()
     object Married: CivilStatus()
@@ -19,12 +18,12 @@ sealed class CivilStatus{
     object Divorced: CivilStatus()
 }
 
-sealed class Voter{
-    object Yes: Voter()
-    object No: Voter()
-}
-
 sealed class Sex{
     object Male: Sex()
     object Female: Sex()
+}
+
+sealed class Voter{
+    object Yes: Voter()
+    object No: Voter()
 }
