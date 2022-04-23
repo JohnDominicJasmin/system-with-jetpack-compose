@@ -5,13 +5,14 @@ import resident_feature.domain.model.Resident
 import resident_feature.domain.repository.ResidentRepository
 import resident_feature.domain.util.validateInput
 
-class AddResidentUseCase(private val residentRepository: ResidentRepository = ResidentRepositoryImpl()) {
+class UpdateResidentUseCase(private val residentRepository: ResidentRepository = ResidentRepositoryImpl()) {
 
     suspend operator fun invoke(resident: Resident){
-        validateInput(resident = resident, action = {
-            residentRepository.addResident(resident)
-        })
-
+        validateInput(
+            resident = resident,
+            action = {
+                residentRepository.updateResident(resident)
+            })
 
     }
 }
