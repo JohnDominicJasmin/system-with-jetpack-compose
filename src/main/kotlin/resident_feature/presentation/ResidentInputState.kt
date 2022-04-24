@@ -3,6 +3,7 @@ package resident_feature.presentation
 import androidx.compose.ui.text.input.TextFieldValue
 
 data class ResidentInputState(
+    var searchQuery: TextFieldValue = TextFieldValue(""),
     var fullName: TextFieldValue = TextFieldValue(""),
     var fullNameErrorMessage: String = "",
     var address : TextFieldValue = TextFieldValue(""),
@@ -21,5 +22,12 @@ data class ResidentInputState(
     var dateErrorMessage: String = "",
     var college : TextFieldValue = TextFieldValue(""),
     var collegeErrorMessage: String = "",
+    var suffixItemIndex : Int = 0,
+    var sexItemIndex : Int = 0,
+    var civilStatusItemIndex : Int = 0,
+    var voterItemIndex : Int = 0,
+    var seniorCitizenItemIndex : Int = 0,
+    var isUpdateButtonEnable : Boolean = false,
+    var isSaveButtonEnable : Boolean = true,
     var isLoading: Boolean = false
 )

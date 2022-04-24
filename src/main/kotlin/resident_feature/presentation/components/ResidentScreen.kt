@@ -21,27 +21,24 @@ fun ResidentScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(Black800),
-        contentAlignment = Alignment.TopCenter
-    ) {
+        contentAlignment = Alignment.TopCenter) {
 
 
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.99f).padding(top = 15.dp),
-            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
-        ) {
+                .fillMaxWidth(0.99f)
+                .padding(top = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
 
             val searchValue = remember { mutableStateOf(TextFieldValue()) }
 
             Row(
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth(0.99f)
-            ) {
+                modifier = Modifier.fillMaxWidth(0.99f)) {
 
 
-                AddNewButton(buttonOnClick = {
+                ResetButton(buttonOnClick = {
 
                 })
 
@@ -61,7 +58,7 @@ fun ResidentScreen() {
                 verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth(0.99f)
-                    .padding(top = 25.dp)
+                    .padding(top = 15.dp)
             ) {
 
                 InputArea(modifier = Modifier.weight(0.83f))
