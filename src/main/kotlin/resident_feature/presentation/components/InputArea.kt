@@ -46,7 +46,8 @@ fun InputArea(modifier: Modifier) {
                 labelText = "Sex",
                 modifier = Modifier.weight(3.5f),
                 items = listOf("Male", "Female"),
-                onSelectedItem = {
+                selectedIndex = 0,
+                onSelectedItemIndex = {
 
                 })
 
@@ -56,7 +57,8 @@ fun InputArea(modifier: Modifier) {
                 labelText = "Suffix",
                 modifier = Modifier.weight(3.5f),
                 items = listOf("None", "Jr", "Sr", "III", "IV", "V"),
-                onSelectedItem = {
+                selectedIndex = 0,
+                onSelectedItemIndex = {
 
                 })
 
@@ -88,7 +90,8 @@ fun InputArea(modifier: Modifier) {
                 labelText = "Civil Status",
                 modifier = Modifier.weight(2.5f),
                 items = listOf("Single", "Married", "Widowed","Divorced"),
-                onSelectedItem = {
+                selectedIndex = 0,
+                onSelectedItemIndex = {
 
                 })
         }
@@ -131,7 +134,8 @@ fun InputArea(modifier: Modifier) {
                 labelText = "Voter",
                 modifier = Modifier.weight(2.5f),
                 items = listOf("No", "Yes"),
-                onSelectedItem = {
+                selectedIndex = 0,
+                onSelectedItemIndex = {
 
                 })
 
@@ -169,7 +173,8 @@ fun InputArea(modifier: Modifier) {
                 labelText = "Senior Citizen",
                 modifier = Modifier.weight(2.5f),
                 items = listOf("No", "Yes"),
-                onSelectedItem = {
+                selectedIndex = 0,
+                onSelectedItemIndex = {
 
                 })
 

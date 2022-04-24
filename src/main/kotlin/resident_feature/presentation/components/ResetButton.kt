@@ -17,22 +17,22 @@ import resident_feature.presentation.theme.Blue700
 import resident_feature.presentation.theme.shape
 
 @Composable
-fun AddNewButton( buttonOnClick: () -> Unit) {
+fun ResetButton(buttonOnClick: () -> Unit) {
 
    Button(
       onClick = buttonOnClick,
       colors = ButtonDefaults.buttonColors(backgroundColor = Blue700, contentColor = Color.White),
       modifier = Modifier
-         .size(height = 50.dp, width = 220.dp)
+         .size(height = 50.dp, width = 160.dp)
          .shadow(elevation = 12.dp, shape = MaterialTheme.shapes.medium, ),
       shape = MaterialTheme.shape.medium) {
 
       Text(
-         text = "Add New",
+         text = "Reset",
          color = Color.White,
          style = MaterialTheme.typography.button,
          fontWeight = FontWeight.SemiBold,
-         modifier = Modifier.padding(top = 5.dp, bottom = 5.dp, start = 30.dp, end = 30.dp),
+         modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 3.dp, bottom = 3.dp),
 
       )
 
@@ -42,7 +42,7 @@ fun AddNewButton( buttonOnClick: () -> Unit) {
 @Preview
 @Composable
 fun Preview(){
-   AddNewButton(){
+   ResetButton(){
 
    }
 }

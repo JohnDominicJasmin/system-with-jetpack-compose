@@ -21,10 +21,10 @@ fun DropDownList(
     labelText:String,
     modifier: Modifier,
     items: List<String>,
-    onSelectedItem: (String) -> Unit) {
+    selectedIndex: Int,
+    onSelectedItemIndex: (Int) -> Unit) {
 
     var expanded by remember { mutableStateOf(false) }
-    var selectedIndex by remember { mutableStateOf(0) }
 
     Column(modifier = modifier,
         horizontalAlignment = Alignment.Start,
@@ -70,8 +70,7 @@ fun DropDownList(
 
             items.forEachIndexed { index, item ->
                 DropdownMenuItem(onClick = {
-                    selectedIndex = index
-                    onSelectedItem(items[selectedIndex])
+                    onSelectedItemIndex(index)
                     expanded = !expanded
                 }) {
 
