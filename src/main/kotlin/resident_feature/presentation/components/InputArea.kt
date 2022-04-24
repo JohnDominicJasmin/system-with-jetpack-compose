@@ -85,9 +85,9 @@ fun InputArea(modifier: Modifier) {
             )
 
             DropDownList(
-                labelText = "Sex",
+                labelText = "Civil Status",
                 modifier = Modifier.weight(2.5f),
-                items = listOf("Male", "Female"),
+                items = listOf("Single", "Married", "Widowed","Divorced"),
                 onSelectedItem = {
 
                 })
