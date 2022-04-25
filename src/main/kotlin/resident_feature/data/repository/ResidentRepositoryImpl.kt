@@ -30,9 +30,7 @@ class ResidentRepositoryImpl(private val residentDao: ResidentDao = ResidentDaoI
         residentDao.deleteResident(resident)
     }
 
-    override suspend fun archiveResident(resident: Resident) {
-        residentDao.archiveResident(resident)
-    }
+
 
     override fun openFile(onSelectedImage: (File) -> Unit) {
         val chooser = JFileChooser()

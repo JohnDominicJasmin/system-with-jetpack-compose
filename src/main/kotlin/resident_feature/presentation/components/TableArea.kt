@@ -1,13 +1,10 @@
 package resident_feature.presentation.components
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedButton
@@ -179,22 +176,20 @@ private fun TableItem(modifier: Modifier, tableRowState: TableRowState, backgrou
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(13.dp, alignment = Alignment.CenterHorizontally)
             ) {
+
                 Icon(
                     painter = painterResource(DrawableResource.EditIcon.resource),
                     contentDescription = "Edit Icon",
                     tint = Color.White,
-
+                    modifier = Modifier.clickable {  }
                     )
                 Icon(
                     painter = painterResource(DrawableResource.DeleteIcon.resource),
                     contentDescription = "Delete Icon",
                     tint = Color.White,
+                    modifier = Modifier.clickable {  }
                 )
-                Icon(
-                    painter = painterResource(DrawableResource.ArchiveIcon.resource),
-                    contentDescription = "Archive Icon",
-                    tint = Color.White,
-                )
+
             }
 
         }

@@ -84,13 +84,29 @@ class ResidentDaoImpl(
             }
 
             if (statement.executeUpdate() == 0) {
-                throw RuntimeException("Failed to add resident")
+                throw RuntimeException("Failed to Add Resident '${resident.fullName.uppercase()}'.")
             }
 
-        } catch (e: Exception) {
-            throw ResidentsAuthentication.ResidentsAuthentication(message = e.message ?: "Failed to add resident")
+        } catch (error: Exception) {
+            error.message?.let{ errorMessage ->
+
+                handleManipulationException(errorMessage, resident)
+
+            }
         }
 
+    }
+    private fun handleManipulationException(errorMessage: String, resident: Resident){
+        if(errorMessage.contains("FULLNAME")){
+            throw ResidentsAuthentication.ResidentsManipulationException(message = "Name '${resident.fullName}' is already used!")
+        }
+        if(errorMessage.contains("CONTACT_NUMBER")){
+            throw ResidentsAuthentication.ResidentsManipulationException(message = "Contact Number '${resident.contactNumber}' is already used.")
+        }
+        if(errorMessage.contains("IMAGE_NAME")){
+            throw ResidentsAuthentication.ResidentsManipulationException(message = "Image is already used.")
+        }
+        throw ResidentsAuthentication.ResidentsManipulationException(message = errorMessage)
     }
 
     override suspend fun updateResident(resident: Resident) {
@@ -124,10 +140,12 @@ class ResidentDaoImpl(
             }
 
             if(statement.executeUpdate() == 0){
-                throw RuntimeException("Failed to Update Resident")
+                throw RuntimeException("Failed to Update Resident '${resident.fullName.uppercase()}'.")
             }
-        }catch (e: Exception) {
-            throw ResidentsAuthentication.ResidentsAuthentication(message = e.message ?: "Failed to Update Resident")
+        }catch (error: Exception) {
+            error.message?.let { errorMessage ->
+                handleManipulationException(errorMessage, resident)
+            }
         }
     }
 
@@ -145,37 +163,20 @@ class ResidentDaoImpl(
             }
 
             if (statement.executeUpdate() == 0) {
-                throw RuntimeException("Failed to Delete Resident")
+                throw RuntimeException("Failed to Delete Resident '${resident.fullName.uppercase()}'.")
             }
 
         } catch (e: Exception) {
-            throw ResidentsAuthentication.ResidentsAuthentication(message = e.message ?: "Failed to Delete Resident")
+            throw ResidentsAuthentication.ResidentsManipulationException(message = e.message ?: "Failed to Delete Resident ")
         }
 
 
     }
-
-    override suspend fun archiveResident(resident: Resident) {
-
-        try {
-            val statement: PreparedStatement =
-                connection.prepareStatement("INSERT INTO ResidentsArchive SELECT * FROM Residents WHERE FULLNAME = ?; DELETE FROM Residents WHERE FULLNAME = ?")
-
-            with(statement) {
-                with(resident) {
-                    setString(1, fullName)
-                    setString(2, fullName)
-                }
-            }
-
-            if (statement.executeUpdate() == 0) {
-                throw RuntimeException("Failed to Archive Resident")
-            }
-
-        }catch (e: Exception) {
-            throw ResidentsAuthentication.ResidentsAuthentication(message = e.message ?: "Failed to Archive Resident")
-        }
+    //TODO ADD FUNCTION FOR SEARCHING
 
 
-    }
+
+
+
+
 }

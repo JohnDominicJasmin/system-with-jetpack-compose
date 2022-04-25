@@ -8,7 +8,7 @@ object Constants {
     const val OCCUPATION_ROW_WEIGHT = 0.1f
     const val VOTER_ROW_WEIGHT = 0.05f
     const val ADDRESS_ROW_WEIGHT = 0.13f
-    const val ICONS_ROW_WEIGHT = 0.04f
+    const val ICONS_ROW_WEIGHT = 0.03f
     const val CONNECTION_URL = "jdbc:sqlite:system_with_jetpack_compose_desktop.db"
     const val REGEX_NUMBER_VALUE = "[0-9]"
     const val REGEX_SPECIAL_CHARACTERS_VALUE = "[!#$%&*()_+=|<>?{}\\[\\]~]"

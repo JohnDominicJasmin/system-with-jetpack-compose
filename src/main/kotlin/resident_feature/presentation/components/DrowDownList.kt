@@ -21,8 +21,8 @@ fun DropDownList(
     labelText:String,
     modifier: Modifier,
     items: List<String>,
-    selectedIndex: Int,
-    onSelectedItemIndex: (Int) -> Unit) {
+    selectedValue: String,
+    onSelectedItem: (String) -> Unit) {
 
     var expanded by remember { mutableStateOf(false) }
 
@@ -53,7 +53,7 @@ fun DropDownList(
             colors = ButtonDefaults.buttonColors(backgroundColor = Black700, contentColor = Gray300),
             onClick = { expanded = !expanded }) {
             Text(
-                text = items[selectedIndex],
+                text = selectedValue,
                 modifier = Modifier.weight(0.9f)
             )
             Icon(painter = painterResource(icon), contentDescription = "Expand Icon Indicator")
@@ -68,9 +68,9 @@ fun DropDownList(
                 .padding(all = 4.dp)
         ) {
 
-            items.forEachIndexed { index, item ->
+            items.forEachIndexed { _, item ->
                 DropdownMenuItem(onClick = {
-                    onSelectedItemIndex(index)
+                    onSelectedItem(item)
                     expanded = !expanded
                 }) {
 
