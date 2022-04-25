@@ -1,7 +1,7 @@
 package resident_feature.domain.model
 
 data class Resident(
-    val id: String,
+    val id: String = "",
     val fullName: String,
     val sex: String ,
     val suffix: String ,
