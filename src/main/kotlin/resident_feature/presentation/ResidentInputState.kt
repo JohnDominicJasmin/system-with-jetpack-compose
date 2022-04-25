@@ -1,6 +1,7 @@
 package resident_feature.presentation
 
 import androidx.compose.ui.text.input.TextFieldValue
+import java.io.File
 
 data class ResidentInputState(
     var searchQuery: TextFieldValue = TextFieldValue(""),
@@ -20,14 +21,17 @@ data class ResidentInputState(
     var citizenshipErrorMessage: String = "",
     var dateOfBirth : TextFieldValue = TextFieldValue(""),
     var dateErrorMessage: String = "",
-    var college : TextFieldValue = TextFieldValue(""),
-    var collegeErrorMessage: String = "",
-    var suffixItemIndex : Int = 0,
-    var sexItemIndex : Int = 0,
-    var civilStatusItemIndex : Int = 0,
-    var voterItemIndex : Int = 0,
-    var seniorCitizenItemIndex : Int = 0,
+    var educationAttainment : TextFieldValue = TextFieldValue(""),
+    var educationalAttainmentErrorMessage: String = "",
+
+    var suffix : String = "",
+    var sex : String = "",
+    var civilStatus : String = "",
+    var voter : String = "",
+    var seniorCitizen : String = "",
+
     var isUpdateButtonEnable : Boolean = false,
     var isSaveButtonEnable : Boolean = true,
+    var imageFile:File? = null,
     var isLoading: Boolean = false
 )

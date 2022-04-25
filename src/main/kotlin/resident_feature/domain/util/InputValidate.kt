@@ -1,6 +1,6 @@
 package resident_feature.domain.util
 
-import resident_feature.common.Constants
+import resident_feature.common.Constants.NUMBER_OF_CHARACTERS_CONTACT_NUMBER
 import resident_feature.common.Constants.REGEX_NUMBER_VALUE
 import resident_feature.common.Constants.REGEX_SPECIAL_CHARACTERS_VALUE
 import resident_feature.common.Constants.USER_INPUT_MINIMUM_NUMBER_OF_CHARACTERS
@@ -15,10 +15,14 @@ import java.util.regex.Pattern
  fun containSpecialCharacters(input: String): Boolean {
     return Pattern.compile(REGEX_SPECIAL_CHARACTERS_VALUE).matcher(input).find()
 }
- fun isNumberOfCharactersShort(input:String, numberOfCharacters: Int = USER_INPUT_MINIMUM_NUMBER_OF_CHARACTERS) =
+ fun isNumberOfCharactersEnough(input:String, numberOfCharacters: Int = USER_INPUT_MINIMUM_NUMBER_OF_CHARACTERS) =
     input.toCharArray().size >= numberOfCharacters
- fun isValidDate(input: String): Boolean {
-    val formatString = "MM/dd/yyyy"
+
+fun isContactNumberValid(input:String): Boolean =
+    input.toCharArray().size == NUMBER_OF_CHARACTERS_CONTACT_NUMBER
+
+fun isDateFormatValid(input: String): Boolean {
+    val formatString = "dd/MM/yyyy"
 
     return runCatching {
         val format = SimpleDateFormat(formatString)
@@ -29,9 +33,10 @@ import java.util.regex.Pattern
 }
 
 
+
+
 suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
     when {
-
         resident.fullName.isEmpty() -> {
             throw ResidentsAuthentication.FullNameException("Field cannot be left blank.")
         }
@@ -40,7 +45,7 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
             throw ResidentsAuthentication.FullNameException("Name must not contain Numbers or Special Characters.")
         }
 
-        isNumberOfCharactersShort(resident.fullName) -> {
+        !isNumberOfCharactersEnough(resident.fullName) -> {
             throw ResidentsAuthentication.FullNameException("Full name is too short.")
         }
 
@@ -53,7 +58,7 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
             throw ResidentsAuthentication.AddressException("Field cannot be left blank.")
         }
 
-        isNumberOfCharactersShort(resident.address) -> {
+        !isNumberOfCharactersEnough(resident.address) -> {
             throw ResidentsAuthentication.AddressException("Address is Invalid.")
         }
 
@@ -66,7 +71,7 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
             throw ResidentsAuthentication.ReligionException("Field cannot be left blank.")
         }
 
-        isNumberOfCharactersShort(resident.religion) -> {
+        !isNumberOfCharactersEnough(resident.religion) -> {
             throw ResidentsAuthentication.ReligionException("Religion is Invalid.")
         }
 
@@ -81,12 +86,12 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
             throw ResidentsAuthentication.ContactNumberException("Field cannot be left blank.")
         }
 
-        isNumberOfCharactersShort(resident.contactNumber, numberOfCharacters = Constants.NUMBER_OF_CHARACTERS_CONTACT_NUMBER) -> {
+        !isContactNumberValid(resident.contactNumber) -> {
             throw ResidentsAuthentication.ContactNumberException("Contact Number is Invalid.")
         }
 
-        containsNumeric(resident.contactNumber) || containSpecialCharacters(resident.contactNumber) -> {
-            throw ResidentsAuthentication.ContactNumberException("Contact Number must not contain Numbers or Special Characters.")
+        containSpecialCharacters(resident.contactNumber) -> {
+            throw ResidentsAuthentication.ContactNumberException("Contact Number must not contain Special Characters.")
         }
 
 
@@ -123,8 +128,8 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
             throw ResidentsAuthentication.DateException("Field cannot be left blank.")
         }
 
-        !isValidDate(resident.dateOfBirth) -> {
-            throw ResidentsAuthentication.DateException("Date is Invalid.")
+        !isDateFormatValid(resident.dateOfBirth) -> {
+            throw ResidentsAuthentication.DateException("Date is Invalid. Format must be 'Date/Month/Year'.")
         }
 
 
