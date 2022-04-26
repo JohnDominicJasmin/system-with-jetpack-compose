@@ -23,7 +23,6 @@ data class ResidentInputState(
     var dateErrorMessage: String = "",
     var educationAttainment : TextFieldValue = TextFieldValue(""),
     var educationalAttainmentErrorMessage: String = "",
-
     var suffix : String = "",
     var sex : String = "",
     var civilStatus : String = "",
@@ -33,5 +32,11 @@ data class ResidentInputState(
     var isUpdateButtonEnable : Boolean = false,
     var isSaveButtonEnable : Boolean = true,
     var imageFile:File? = null,
+
+    var isFullNameSorted: Boolean = false,
+    var isSexToggled: Boolean = false,
+    var isAgeSorted: Boolean = false,
+    var isPurokSorted: Boolean = false,
+    var isVoterToggle: Boolean = false,
     var isLoading: Boolean = false
 )

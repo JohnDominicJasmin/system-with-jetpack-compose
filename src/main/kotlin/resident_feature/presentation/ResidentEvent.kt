@@ -25,5 +25,11 @@ sealed class ResidentEvent{
     object SaveResident: ResidentEvent()
     object EditResident: ResidentEvent()
     object DeleteResident: ResidentEvent()
+    object SelectResidentRow: ResidentEvent()
+    object SortFullName: ResidentEvent()
+    object ToggleSex: ResidentEvent()
+    object SortAge: ResidentEvent()
+    object SortPurok: ResidentEvent()
+    object ToggleVoter: ResidentEvent()
 
 }
