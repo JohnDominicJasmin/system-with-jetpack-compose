@@ -26,8 +26,8 @@ class ResidentRepositoryImpl(private val residentDao: ResidentDao = ResidentDaoI
         residentDao.updateResident(resident)
     }
 
-    override suspend fun deleteResident(resident: Resident) {
-        residentDao.deleteResident(resident)
+    override suspend fun deleteResident(residentId: Int) {
+        residentDao.deleteResident(residentId)
     }
 
 
@@ -51,10 +51,10 @@ class ResidentRepositoryImpl(private val residentDao: ResidentDao = ResidentDaoI
         }
     }
 
-    override suspend fun saveImageToLocalFolder(file: File) {
+    override suspend fun saveImageToLocalFolder(filePath: String, fileName: String) {
      withContext(Dispatchers.IO) {
-                ImageIO.read(File(file.canonicalPath)).also { image ->
-                    ImageIO.write(image, "png", File(Constants.SELECTED_IMAGE_PATH_DESTINATION + file.name))
+                ImageIO.read(File(filePath)).also { image ->
+                    ImageIO.write(image, "png", File(Constants.SELECTED_IMAGE_PATH_DESTINATION + fileName))
                 }
             }
     }

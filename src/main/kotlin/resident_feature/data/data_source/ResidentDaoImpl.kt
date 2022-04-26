@@ -149,21 +149,17 @@ class ResidentDaoImpl(
         }
     }
 
-    override suspend fun deleteResident(resident: Resident) {
+    override suspend fun deleteResident(residentId: Int) {
 
 
         try {
             val statement: PreparedStatement =
                 connection.prepareStatement("DELETE FROM Residents WHERE ID = ?")
 
-            with(statement) {
-                with(resident) {
-                    setString(1, id)
-                }
-            }
+                    statement.setInt(1, residentId)
 
             if (statement.executeUpdate() == 0) {
-                throw RuntimeException("Failed to Delete Resident '${resident.fullName.uppercase()}'.")
+                throw RuntimeException("Failed to Delete Resident!")
             }
 
         } catch (e: Exception) {

@@ -8,7 +8,7 @@ interface ResidentDao {
     fun getResidents(): Flow<List<Resident>>
     suspend fun addResident(resident: Resident)
     suspend fun updateResident(resident: Resident)
-    suspend fun deleteResident(resident: Resident)
+    suspend fun deleteResident(residentId: Int)
 
 
 
