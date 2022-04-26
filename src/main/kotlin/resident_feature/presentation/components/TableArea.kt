@@ -27,59 +27,17 @@ import resident_feature.common.Constants.OCCUPATION_ROW_WEIGHT
 import resident_feature.common.Constants.PUROK_ROW_WEIGHT
 import resident_feature.common.Constants.SEX_ROW_WEIGHT
 import resident_feature.common.Constants.VOTER_ROW_WEIGHT
-import resident_feature.presentation.*
+import resident_feature.domain.model.Resident
+import resident_feature.presentation.ResidentTableState
 import resident_feature.presentation.theme.Black800
 import resident_feature.presentation.theme.Blue400
 import resident_feature.presentation.theme.Gray200
 import resident_feature.presentation.theme.Gray600
-
-
-private val sampleRowData = listOf(
-    TableRowState(
-        fullName = "Rodrigo Duterte",
-        sex = Sex.Male,
-        age = 76,
-        purok = "Sample Purok",
-        civilStatus = CivilStatus.Married,
-        occupation = "President of The Philippines",
-        voter = Voter.Yes,
-        address = "Davao City"
-    ),
-    TableRowState(
-        fullName = "Rodrigo Duterte",
-        sex = Sex.Male,
-        age = 76,
-        purok = "Sample Purok",
-        civilStatus = CivilStatus.Married,
-        occupation = "President of The Philippines",
-        voter = Voter.Yes,
-        address = "Davao Cityasdasdasdasdwewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
-    ),
-    TableRowState(
-        fullName = "Rodrigo Duterte",
-        sex = Sex.Male,
-        age = 76,
-        purok = "Sample Purok",
-        civilStatus = CivilStatus.Married,
-        occupation = "President of The Philippines",
-        voter = Voter.Yes,
-        address = "Davao City"
-    ),
-    TableRowState(
-        fullName = "Rodrigo Duterte",
-        sex = Sex.Male,
-        age = 76,
-        purok = "Sample Purok",
-        civilStatus = CivilStatus.Married,
-        occupation = "President of The Philippines",
-        voter = Voter.Yes,
-        address = "Davao City"
-    )
-)
+import resident_feature.util.DrawableResource
 
 
 @Composable
-fun TableItemsArea(modifier: Modifier) {
+fun TableItemsArea(modifier: Modifier,residentTableState: ResidentTableState) {
 
     val backgroundColorState = remember { mutableStateOf(Blue400) }
 
@@ -89,7 +47,7 @@ fun TableItemsArea(modifier: Modifier) {
 
         LazyColumn {
 
-            itemsIndexed(sampleRowData) { index, item ->
+            itemsIndexed(residentTableState.residents) { index, item ->
 
                 backgroundColorState.value = if (index % 2 == 0) {
                     Blue400
@@ -101,7 +59,7 @@ fun TableItemsArea(modifier: Modifier) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 5.dp, bottom = 5.dp),
-                    tableRowState = item,
+                    resident = item,
                     backgroundColor = backgroundColorState.value
                 )
             }
@@ -113,14 +71,14 @@ fun TableItemsArea(modifier: Modifier) {
 
 
 @Composable
-private fun TableItem(modifier: Modifier, tableRowState: TableRowState, backgroundColor: Color) {
+private fun TableItem(modifier: Modifier, resident: Resident, backgroundColor: Color) {
     Row(modifier = Modifier.background(backgroundColor)) {
         Row(
             modifier = modifier.horizontalScroll(state = rememberScrollState()),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = tableRowState.fullName,
+                text = resident.fullName,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(FULL_NAME_ROW_WEIGHT),
@@ -129,41 +87,41 @@ private fun TableItem(modifier: Modifier, tableRowState: TableRowState, backgrou
 
 
             Text(
-                text = tableRowState.sex.javaClass.simpleName,
+                text = resident.sex.javaClass.simpleName,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(SEX_ROW_WEIGHT)
             )
 
             Text(
-                text = tableRowState.age.toString(),
+                text = resident.age.toString(),
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(AGE_ROW_WEIGHT)
             )
 
             Text(
-                text = tableRowState.purok,
+                text = resident.purok,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(PUROK_ROW_WEIGHT)
             )
             Text(
-                text = tableRowState.occupation,
+                text = resident.occupation,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(OCCUPATION_ROW_WEIGHT)
             )
 
             Text(
-                text = tableRowState.voter.javaClass.simpleName,
+                text = resident.voter.javaClass.simpleName,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(VOTER_ROW_WEIGHT)
             )
 
             Text(
-                text = tableRowState.address,
+                text = resident.address,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(ADDRESS_ROW_WEIGHT)

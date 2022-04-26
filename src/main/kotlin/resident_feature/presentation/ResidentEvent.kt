@@ -1,6 +1,7 @@
 package resident_feature.presentation
 
 import androidx.compose.ui.text.input.TextFieldValue
+import resident_feature.domain.util.OrderType
 
 sealed class ResidentEvent{
     object ResetResident: ResidentEvent()
@@ -26,7 +27,7 @@ sealed class ResidentEvent{
     object EditResident: ResidentEvent()
     object DeleteResident: ResidentEvent()
     object SelectResidentRow: ResidentEvent()
-    object SortFullName: ResidentEvent()
+    data class SortFullName(val order : OrderType.FullNameColumnOrder): ResidentEvent()
     object ToggleSex: ResidentEvent()
     object SortAge: ResidentEvent()
     object SortPurok: ResidentEvent()

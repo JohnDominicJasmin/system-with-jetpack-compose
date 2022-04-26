@@ -5,28 +5,28 @@ import kotlinx.coroutines.flow.map
 import resident_feature.data.repository.ResidentRepositoryImpl
 import resident_feature.domain.model.Resident
 import resident_feature.domain.repository.ResidentRepository
-import resident_feature.domain.util.OrderColumn
+import resident_feature.domain.util.OrderType
 
 class GetResidentsUseCase(private val residentRepository: ResidentRepository = ResidentRepositoryImpl()) {
-    operator fun invoke(input: OrderColumn): Flow<List<Resident>> {
+    operator fun invoke(input: OrderType): Flow<List<Resident>> {
 
         return residentRepository.getResidents().map { place ->
 
             when(input){
-                is OrderColumn.FullNameColumn.Ascending -> place.sortedBy { it.fullName }
-                is OrderColumn.FullNameColumn.Descending -> place.sortedByDescending { it.fullName }
+                is OrderType.FullNameColumnOrder.Ascending -> place.sortedBy { it.fullName }
+                is OrderType.FullNameColumnOrder.Descending -> place.sortedByDescending { it.fullName }
 
-                is OrderColumn.AgeColumn.Ascending -> place.sortedBy { it.age }
-                is OrderColumn.AgeColumn.Descending -> place.sortedByDescending { it.age }
+                is OrderType.AgeColumnOrder.Ascending -> place.sortedBy { it.age }
+                is OrderType.AgeColumnOrder.Descending -> place.sortedByDescending { it.age }
 
-                is OrderColumn.PurokColumn.Ascending -> place.sortedBy { it.purok }
-                is OrderColumn.PurokColumn.Descending -> place.sortedByDescending { it.purok }
+                is OrderType.PurokColumnOrder.Ascending -> place.sortedBy { it.purok }
+                is OrderType.PurokColumnOrder.Descending -> place.sortedByDescending { it.purok }
 
-                is OrderColumn.SexColumn.Ascending -> place.sortedBy { it.sex }
-                is OrderColumn.SexColumn.Descending -> place.sortedByDescending { it.sex }
+                is OrderType.SexColumnOrder.Ascending -> place.sortedBy { it.sex }
+                is OrderType.SexColumnOrder.Descending -> place.sortedByDescending { it.sex }
 
-                is OrderColumn.VoterColumn.Ascending -> place.sortedBy { it.voter }
-                is OrderColumn.VoterColumn.Descending -> place.sortedByDescending { it.voter }
+                is OrderType.VoterColumnOrder.Ascending -> place.sortedBy { it.voter }
+                is OrderType.VoterColumnOrder.Descending -> place.sortedByDescending { it.voter }
             }
         }
     }

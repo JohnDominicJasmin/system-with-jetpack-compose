@@ -12,9 +12,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import resident_feature.presentation.DrawableResource
 import resident_feature.presentation.theme.Black700
 import resident_feature.presentation.theme.Gray300
+import resident_feature.util.DrawableResource
 
 @Composable
 fun DropDownList(

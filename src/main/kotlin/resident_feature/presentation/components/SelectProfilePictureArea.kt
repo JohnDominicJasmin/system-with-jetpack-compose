@@ -13,10 +13,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import resident_feature.presentation.DrawableResource.ProfilePlaceHolder
 import resident_feature.presentation.theme.Blue700
 import resident_feature.presentation.theme.Blue950
 import resident_feature.presentation.theme.Gray200
+import resident_feature.util.DrawableResource.ProfilePlaceHolder
 
 @Composable
 fun SelectProfilePictureArea(
