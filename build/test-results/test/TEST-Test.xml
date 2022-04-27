@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Test" tests="1" skipped="0" failures="1" errors="0" timestamp="2022-04-15T13:36:29" hostname="miko-linux" time="0.021">
+<testsuite name="Test" tests="1" skipped="0" failures="1" errors="0" timestamp="2022-04-26T17:03:09" hostname="miko-linux" time="0.081">
   <properties/>
-  <testcase name="test()" classname="Test" time="0.021">
-    <failure message="java.lang.AssertionError: Assertion failed" type="java.lang.AssertionError">java.lang.AssertionError: Assertion failed
-	at Test.test(Test.kt:8)
+  <testcase name="testSavingImage()" classname="Test" time="0.081">
+    <failure message="javax.imageio.IIOException: Can't create an ImageInputStream!" type="javax.imageio.IIOException">javax.imageio.IIOException: Can't create an ImageInputStream!
+	at java.desktop/javax.imageio.ImageIO.read(ImageIO.java:1313)
+	at Test$testSavingImage$1.invokeSuspend(Test.kt:51)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:106)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:274)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:85)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:59)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:38)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at Test.testSavingImage(Test.kt:50)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
