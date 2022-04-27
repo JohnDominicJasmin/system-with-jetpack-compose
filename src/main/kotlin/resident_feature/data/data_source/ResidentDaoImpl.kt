@@ -23,7 +23,7 @@ class ResidentDaoImpl(
             emit(
                 value = listOf(
                     Resident(
-                        id = resultSet.getString("ID"),
+                        id = resultSet.getInt("ID"),
                         fullName = resultSet.getString("FULLNAME"),
                         suffix = resultSet.getString("SUFFIX"),
                         sex = resultSet.getString("SEX"),
@@ -135,7 +135,7 @@ class ResidentDaoImpl(
                     setString(15, seniorCitizen)
                     setString(16, localImagePath)
                     setString(17, imageName)
-                    setString(18, id)
+                    setInt(18, id)
                 }
             }
 
@@ -168,7 +168,6 @@ class ResidentDaoImpl(
 
 
     }
-    //TODO ADD FUNCTION FOR SEARCHING
 
 
 

@@ -4,6 +4,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 data class ResidentInputState(
     var searchQuery: TextFieldValue = TextFieldValue(""),
+    var id : Int = -1,
     var fullName: TextFieldValue = TextFieldValue(""),
     var fullNameErrorMessage: String = "",
     var address : TextFieldValue = TextFieldValue(""),
@@ -19,7 +20,7 @@ data class ResidentInputState(
     var citizenship : TextFieldValue = TextFieldValue(""),
     var citizenshipErrorMessage: String = "",
     var dateOfBirth : TextFieldValue = TextFieldValue(""),
-    var dateErrorMessage: String = "",
+    var dateOfBirthErrorMessage: String = "",
     var educationalAttainment : TextFieldValue = TextFieldValue(""),
     var educationalAttainmentErrorMessage: String = "",
     var suffix : String = "",
@@ -27,6 +28,7 @@ data class ResidentInputState(
     var civilStatus : String = "",
     var voter : String = "",
     var seniorCitizen : String = "",
+    var profileImageErrorMessage: String = "",
 
     var isUpdateButtonEnable : Boolean = false,
     var isSaveButtonEnable : Boolean = true,

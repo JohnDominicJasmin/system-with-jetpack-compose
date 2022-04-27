@@ -11,4 +11,5 @@ sealed class ResidentsAuthentication{
      class CitizenshipException(message: String): RuntimeException(message)
      class DateException(message: String): RuntimeException(message)
      class EducationalAttainmentException(message: String): RuntimeException(message)
+     class ProfileImageException(message: String): RuntimeException(message)
 }

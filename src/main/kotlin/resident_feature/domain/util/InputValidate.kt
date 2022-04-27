@@ -112,7 +112,7 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
             throw ResidentsAuthentication.OccupationException("Occupation must not contain Numbers or Special Characters.")
         }
 
-
+        //todo ADD VALIDATION FOR PROFILE IMAGE
 
         resident.citizenship.isEmpty() -> {
             throw ResidentsAuthentication.CitizenshipException("Field cannot be left blank.")
@@ -142,6 +142,12 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
         containsNumeric(resident.educationalAttainment) || containSpecialCharacters(resident.educationalAttainment) -> {
             throw ResidentsAuthentication.EducationalAttainmentException("Field must not contain Number or Special Characters.")
         }
+
+
+        resident.imageName.isEmpty() || resident.localImagePath.isEmpty() -> {
+            throw ResidentsAuthentication.ProfileImageException("Profile Image cannot be left blank.")
+        }
+
 
         else -> action()
 

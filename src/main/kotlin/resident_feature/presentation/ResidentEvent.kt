@@ -1,12 +1,13 @@
 package resident_feature.presentation
 
 import androidx.compose.ui.text.input.TextFieldValue
+import resident_feature.domain.model.Resident
 import resident_feature.domain.util.OrderType
 
 sealed class ResidentEvent{
     object ResetResident: ResidentEvent()
     data class EnteredSearchValue(val searchQuery: TextFieldValue): ResidentEvent()
-    object SearchResident: ResidentEvent()
+    data class SearchResident(val searchQuery: TextFieldValue): ResidentEvent()
     data class EnteredFullName(val fullName: TextFieldValue): ResidentEvent()
     data class SelectedSuffix(val suffix: String): ResidentEvent()
     data class SelectedSex(val sex: String): ResidentEvent()
@@ -24,13 +25,13 @@ sealed class ResidentEvent{
     object BrowseImage: ResidentEvent()
     object UpdateResident: ResidentEvent()
     object SaveResident: ResidentEvent()
-    object EditResident: ResidentEvent()
-    object DeleteResident: ResidentEvent()
-    object SelectResidentRow: ResidentEvent()
-    data class SortFullName(val order : OrderType.FullNameColumnOrder): ResidentEvent()
-    object ToggleSex: ResidentEvent()
-    object SortAge: ResidentEvent()
-    object SortPurok: ResidentEvent()
-    object ToggleVoter: ResidentEvent()
+    data class EditResident(val resident: Resident): ResidentEvent()
+    data class DeleteResident(val residentId: Int): ResidentEvent()
+    data class SelectResidentRow(val resident: Resident): ResidentEvent()
+    data class SortFullName(val orderType : OrderType.FullNameColumnOrder): ResidentEvent()
+    data class ToggleSex(val orderType: OrderType.SexColumnOrder): ResidentEvent()
+    data class SortAge(val orderType: OrderType.AgeColumnOrder): ResidentEvent()
+    data class SortPurok(val orderType: OrderType.PurokColumnOrder): ResidentEvent()
+    data class ToggleVoter(val orderType: OrderType.VoterColumnOrder): ResidentEvent()
 
 }
