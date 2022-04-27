@@ -5,10 +5,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,38 +34,55 @@ import resident_feature.util.DrawableResource
 
 
 @Composable
-fun TableItemsArea(modifier: Modifier,residentTableState: ResidentTableState) {
+fun TableItemsArea(modifier: Modifier, residentTableState: ResidentTableState) {
 
     val backgroundColorState = remember { mutableStateOf(Blue400) }
 
-    Column(modifier = modifier) {
+    Card(modifier = modifier, border = BorderStroke(width = 1.dp, color = Color.Gray), backgroundColor = Color.Unspecified, elevation = 0.dp, ) {
+        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,) {
 
-        TitleArea()
+            TitleArea()
 
-        LazyColumn {
-
-            itemsIndexed(residentTableState.residents) { index, item ->
-
-                backgroundColorState.value = if (index % 2 == 0) {
-                    Blue400
-                } else {
-                    Gray600
-                }
-
-                TableItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 5.dp, bottom = 5.dp),
-                    resident = item,
-                    backgroundColor = backgroundColorState.value
-                )
+            if (residentTableState.residents.isEmpty()) {
+                NoDataDisplayText()
             }
 
-
+            LazyColumn {
+                itemsIndexed(residentTableState.residents) { index, item ->
+                    backgroundColorState.value = if (index % 2 == 0) {
+                        Blue400
+                    } else {
+                        Gray600
+                    }
+                    TableItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 5.dp, bottom = 5.dp),
+                        resident = item,
+                        backgroundColor = backgroundColorState.value
+                    )
+                }
+            }
         }
     }
 }
 
+
+@Composable
+private fun NoDataDisplayText(){
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Text(
+            text = "No data to display",
+            color = Gray200,
+
+        )
+    }
+}
 
 @Composable
 private fun TableItem(modifier: Modifier, resident: Resident, backgroundColor: Color) {
@@ -250,6 +264,7 @@ private fun TitleItem(modifier: Modifier, title: String, iconResource: String? =
         }
     }
 }
+
 
 @Preview
 @Composable
