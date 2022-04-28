@@ -49,19 +49,13 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
             throw ResidentsAuthentication.FullNameException("Full name is too short.")
         }
 
-
-        resident.suffix.isEmpty() -> {
-            throw ResidentsAuthentication.SuffixException("Field cannot be left blank.")
-        }
-
         resident.sex.isEmpty() -> {
             throw ResidentsAuthentication.SexException("Field cannot be left blank.")
         }
 
-
-
-
-
+        resident.suffix.isEmpty() -> {
+            throw ResidentsAuthentication.SuffixException("Field cannot be left blank.")
+        }
 
 
 

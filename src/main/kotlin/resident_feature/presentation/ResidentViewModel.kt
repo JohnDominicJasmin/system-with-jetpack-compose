@@ -51,52 +51,56 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                     _inputState.value = this.copy(searchQuery = event.searchQuery)
                 }
                 is ResidentEvent.EnteredFullName -> {
-                    _inputState.value = this.copy(fullName = event.fullName)
+                    _inputState.value = this.copy(fullName = event.fullName, fullNameErrorMessage = "")
                 }
                 is ResidentEvent.SelectedSuffix -> {
-                    _inputState.value = this.copy(suffix = event.suffix)
+                    _inputState.value = this.copy(suffix = event.suffix, suffixErrorMessage = "")
                 }
                 is ResidentEvent.SelectedSex -> {
-                    _inputState.value = this.copy(sex = event.sex)
+                    _inputState.value = this.copy(sex = event.sex, sexErrorMessage = "")
                 }
                 is ResidentEvent.EnteredAddress -> {
-                    _inputState.value = this.copy(address = event.address)
+                    _inputState.value = this.copy(address = event.address, addressErrorMessage = "")
                 }
                 is ResidentEvent.EnteredReligion -> {
-                    _inputState.value = this.copy(religion = event.religion)
+                    _inputState.value = this.copy(religion = event.religion, religionErrorMessage = "")
                 }
                 is ResidentEvent.SelectedCivilStatus -> {
-                    _inputState.value = this.copy(civilStatus = event.civilStatus)
+                    _inputState.value = this.copy(civilStatus = event.civilStatus, civilStatusErrorMessage = "")
                 }
                 is ResidentEvent.EnteredContactNumber -> {
-                    _inputState.value = this.copy(contactNumber = event.contactNumber)
+                    _inputState.value = this.copy(contactNumber = event.contactNumber, contactNumberErrorMessage = "")
                 }
                 is ResidentEvent.EnteredPurok -> {
-                    _inputState.value = this.copy(purok = event.purok)
+                    _inputState.value = this.copy(purok = event.purok, purokErrorMessage = "")
                 }
                 is ResidentEvent.EnteredOccupation -> {
-                    _inputState.value = this.copy(occupation = event.occupation)
+                    _inputState.value = this.copy(occupation = event.occupation, occupationErrorMessage = "")
                 }
                 is ResidentEvent.SelectedVoter -> {
-                    _inputState.value = this.copy(voter = event.voter)
+                    _inputState.value = this.copy(voter = event.voter, voterErrorMessage = "")
                 }
                 is ResidentEvent.EnteredCitizenship -> {
-                    _inputState.value = this.copy(citizenship = event.citizenship)
+                    _inputState.value = this.copy(citizenship = event.citizenship, citizenshipErrorMessage = "")
                 }
                 is ResidentEvent.EnteredBirthdate -> {
-                    _inputState.value = this.copy(dateOfBirth = event.birthdate)
+                    _inputState.value = this.copy(dateOfBirth = event.birthdate, dateOfBirthErrorMessage = "")
                 }
                 is ResidentEvent.SelectedSeniorCitizen -> {
-                    _inputState.value = this.copy(seniorCitizen = event.seniorCitizen)
+                    _inputState.value = this.copy(seniorCitizen = event.seniorCitizen, seniorCitizenErrorMessage = "")
                 }
                 is ResidentEvent.EnteredEducationalAttainment -> {
-                    _inputState.value = this.copy(educationalAttainment = event.educationalAttainment)
+                    _inputState.value = this.copy(educationalAttainment = event.educationalAttainment, educationalAttainmentErrorMessage = "")
                 }
                 is ResidentEvent.BrowseImage -> {
                     CoroutineScope(Dispatchers.Default).launch {
                         residentsUseCase.openFileUseCase { selectedFile ->
                             _inputState.value =
                                 this@with.copy(imagePath = selectedFile.canonicalPath, imageName = selectedFile.name)
+                        }.also{
+                            residentsUseCase.saveImageToLocalFolderUseCase(
+                                filePath = inputState.value.imagePath, fileName = inputState.value.imageName
+                            )
                         }
                     }
                 }

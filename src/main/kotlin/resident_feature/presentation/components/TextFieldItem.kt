@@ -2,10 +2,9 @@ package resident_feature.presentation.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -72,4 +71,22 @@ fun TextFieldItem(
         ErrorMessage(errorMessage)
     }
 }
+}
+@Composable
+fun ErrorMessage(errorMessage: String){
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(3.dp),
+        verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            imageVector = Icons.Default.Warning,
+            tint = ErrorColor,
+            modifier = Modifier.size(12.dp),
+            contentDescription = "Icon error")
+        Text(
+            text = errorMessage,
+            color = ErrorColor,
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.padding(1.2.dp)
+        )
+    }
 }

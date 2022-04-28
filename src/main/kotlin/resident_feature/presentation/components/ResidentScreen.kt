@@ -68,11 +68,18 @@ fun ResidentScreen() {
                     .padding(top = 15.dp)) {
 
                 InputArea(modifier = Modifier.weight(0.83f), residentViewModel = viewModel)
+
                 SelectProfilePictureArea(
-                    modifier = Modifier.padding(start = 18.dp, top = 20.dp).weight(0.17f),
-                    browseButtonOnClick = {},
-                    saveButtonOnClick = {},
-                    updateButtonOnClick = {})
+                    modifier = Modifier
+                        .padding(start = 18.dp, top = 20.dp)
+                        .weight(0.17f),
+                    errorMessage = inputState.profileImageErrorMessage,
+                    imageResource = inputState.imagePath + inputState.imageName,
+                    browseButtonOnClick = {
+                        viewModel.onEvent(event = ResidentEvent.BrowseImage)
+                    },
+                    saveButtonOnClick = { viewModel.onEvent(event = ResidentEvent.SaveResident)},
+                    updateButtonOnClick = { viewModel.onEvent(event = ResidentEvent.UpdateResident)})
 
 
             }

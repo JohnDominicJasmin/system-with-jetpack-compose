@@ -4,8 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import resident_feature.presentation.ResidentEvent
 import resident_feature.presentation.ResidentViewModel
 import resident_feature.presentation.theme.Black700
-import resident_feature.presentation.theme.ErrorColor
 import resident_feature.presentation.theme.Gray300
 import resident_feature.util.DrawableResource
 
@@ -44,6 +41,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 onValueChange = { fullName ->
                     residentViewModel.onEvent(event = ResidentEvent.EnteredFullName(fullName = fullName))
                 },
+                errorMessage = state.fullNameErrorMessage
             )
 
             DropDownList(
@@ -51,6 +49,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 modifier = Modifier.weight(3.5f),
                 items = listOf("Male", "Female"),
                 selectedValue = state.sex,
+                errorMessage = state.sexErrorMessage,
                 onSelectedItem = { sex ->
                     residentViewModel.onEvent(event = ResidentEvent.SelectedSex(sex = sex))
                 })
@@ -61,6 +60,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 modifier = Modifier.weight(3.5f),
                 items = listOf("None", "Jr", "Sr", "III", "IV", "V"),
                 selectedValue = state.suffix,
+                errorMessage = state.suffixErrorMessage,
                 onSelectedItem = { suffix ->
                     residentViewModel.onEvent(event = ResidentEvent.SelectedSuffix(suffix = suffix))
                 })
@@ -75,15 +75,18 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 modifier = Modifier.weight(4.5f, fill = false),
                 labelText = "Address",
                 textFieldValue = state.address,
+                errorMessage = state.addressErrorMessage,
                 onValueChange = { address ->
                     residentViewModel.onEvent(event = ResidentEvent.EnteredAddress(address = address))
                 },
+
             )
 
             TextFieldItem(
                 modifier = Modifier.weight(3.0f, fill = false),
                 labelText = "Religion",
                 textFieldValue = state.religion,
+                errorMessage = state.religionErrorMessage,
                 onValueChange = { religion ->
                     residentViewModel.onEvent(event = ResidentEvent.EnteredReligion(religion = religion))
                 },
@@ -94,6 +97,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 modifier = Modifier.weight(2.5f),
                 items = listOf("Single", "Married", "Widowed","Divorced"),
                 selectedValue = state.civilStatus,
+                errorMessage = state.civilStatusErrorMessage,
                 onSelectedItem = { civilStatus ->
                     residentViewModel.onEvent(event = ResidentEvent.SelectedCivilStatus(civilStatus = civilStatus))
                 })
@@ -105,6 +109,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 modifier = Modifier.weight(4.5f, fill = false),
                 labelText = "Contact Number",
                 textFieldValue = state.contactNumber,
+                errorMessage = state.contactNumberErrorMessage,
                 onValueChange = { contactNumber ->
                     residentViewModel.onEvent(event = ResidentEvent.EnteredContactNumber(contactNumber = contactNumber))
                 },
@@ -117,6 +122,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 onValueChange = { purok ->
                     residentViewModel.onEvent(event = ResidentEvent.EnteredPurok(purok = purok))
                 },
+                errorMessage = state.purokErrorMessage
             )
 
 
@@ -127,6 +133,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 onValueChange = { occupation ->
                     residentViewModel.onEvent(event = ResidentEvent.EnteredOccupation(occupation = occupation))
                 },
+                errorMessage = state.occupationErrorMessage
             )
         }
 
@@ -138,6 +145,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 modifier = Modifier.weight(2.5f),
                 items = listOf("No", "Yes"),
                 selectedValue = state.voter,
+                errorMessage = state.voterErrorMessage,
                 onSelectedItem = { voter ->
                     residentViewModel.onEvent(event = ResidentEvent.SelectedVoter(voter = voter))
                 })
@@ -150,6 +158,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 onValueChange = { citizenship ->
                     residentViewModel.onEvent(event = ResidentEvent.EnteredCitizenship(citizenship = citizenship))
                 },
+                errorMessage = state.citizenshipErrorMessage
             )
 
             TextFieldItem(
@@ -166,7 +175,8 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.caption
                     )
-                }
+                },
+                errorMessage = state.dateOfBirthErrorMessage
             )
         }
 
@@ -177,6 +187,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 modifier = Modifier.weight(2.5f),
                 items = listOf("No", "Yes"),
                 selectedValue = state.seniorCitizen,
+                errorMessage = state.seniorCitizenErrorMessage,
                 onSelectedItem = { seniorCitizen ->
                     residentViewModel.onEvent(event = ResidentEvent.SelectedSeniorCitizen(seniorCitizen = seniorCitizen))
                 })
@@ -189,6 +200,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 onValueChange = { educationalAttainment ->
                     residentViewModel.onEvent(event = ResidentEvent.EnteredEducationalAttainment(educationalAttainment = educationalAttainment))
                 },
+                errorMessage = state.educationalAttainmentErrorMessage
             )
             Spacer(modifier = Modifier.weight(4.5f))
 
@@ -205,10 +217,12 @@ fun DropDownList(
     labelText:String,
     modifier: Modifier,
     items: List<String>,
+    errorMessage: String,
     selectedValue: String,
     onSelectedItem: (String) -> Unit) {
 
     var expanded by remember { mutableStateOf(false) }
+    val hasError = errorMessage.isNotEmpty()
 
     Column(modifier = modifier,
         horizontalAlignment = Alignment.Start,
@@ -262,25 +276,11 @@ fun DropDownList(
                 }
             }
         }
+
+        if(hasError){
+            ErrorMessage(errorMessage = errorMessage)
+        }
     }
 
 }
 
-@Composable
-fun ErrorMessage(errorMessage: String){
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(3.dp),
-        verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            imageVector = Icons.Default.Warning,
-            tint = ErrorColor,
-            modifier = Modifier.size(12.dp),
-            contentDescription = "Icon error")
-        Text(
-            text = errorMessage,
-            color = ErrorColor,
-            style = MaterialTheme.typography.caption,
-            modifier = Modifier.padding(1.2.dp)
-        )
-    }
-}

@@ -8,6 +8,5 @@ sealed class DrawableResource(val resource: String){
  object ToggleSortIcon: DrawableResource(resource = "ic_toggle_sort_icon.svg")
  object EditIcon: DrawableResource(resource = "ic_pen.svg")
  object DeleteIcon: DrawableResource(resource = "ic_trash.svg")
- object ArchiveIcon: DrawableResource(resource = "ic_archive.svg")
 
 }
