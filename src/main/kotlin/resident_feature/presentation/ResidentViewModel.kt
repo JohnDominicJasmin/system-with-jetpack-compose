@@ -30,19 +30,19 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
     private val _eventFlow: MutableSharedFlow<ResidentEventResult> = MutableSharedFlow()
     val eventFlow: SharedFlow<ResidentEventResult> = _eventFlow.asSharedFlow()
 
-    var job: Job? = null
+    private var job: Job? = null
 
 
     init {
         loadResidents(columnOrder = OrderType.FullNameColumnOrder.Ascending)
     }
 
-    suspend fun onEvent(event: ResidentEvent) {
+      fun onEvent(event: ResidentEvent) {
 
         with(inputState.value) {
             when (event) {
                 is ResidentEvent.ResetResident -> {
-                    _inputState.value = this.copy()
+                    _inputState.value = ResidentInputState()
                 }
                 is ResidentEvent.EnteredSearchValue -> {
                     _inputState.value = this.copy(searchQuery = event.searchQuery)
@@ -86,11 +86,11 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 is ResidentEvent.EnteredBirthdate -> {
                     _inputState.value = this.copy(dateOfBirth = event.birthdate)
                 }
-                is ResidentEvent.ItemSelectedSeniorCitizen -> {
+                is ResidentEvent.SelectedSeniorCitizen -> {
                     _inputState.value = this.copy(seniorCitizen = event.seniorCitizen)
                 }
-                is ResidentEvent.EnteredCollege -> {
-                    _inputState.value = this.copy(educationalAttainment = event.college)
+                is ResidentEvent.EnteredEducationalAttainment -> {
+                    _inputState.value = this.copy(educationalAttainment = event.educationalAttainment)
                 }
                 is ResidentEvent.BrowseImage -> {
                     CoroutineScope(Dispatchers.Default).launch {

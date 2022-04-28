@@ -12,9 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import resident_feature.presentation.ResidentEvent
+import resident_feature.presentation.ResidentViewModel
 import resident_feature.presentation.theme.Black700
 import resident_feature.presentation.theme.ErrorColor
 import resident_feature.presentation.theme.Gray300
@@ -22,10 +23,9 @@ import resident_feature.util.DrawableResource
 
 
 @Composable
-fun InputArea(modifier: Modifier) {
+fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
 
-    val textFieldValue = remember { mutableStateOf(TextFieldValue()) }
-
+    val state = residentViewModel.inputState.value
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -40,9 +40,9 @@ fun InputArea(modifier: Modifier) {
             TextFieldItem(
                 modifier = Modifier.weight(3.5f, fill = false),
                 labelText = "Full Name",
-                textFieldValue = textFieldValue.value,
-                onValueChange = {
-                    textFieldValue.value = it
+                textFieldValue = state.fullName,
+                onValueChange = { fullName ->
+                    residentViewModel.onEvent(event = ResidentEvent.EnteredFullName(fullName = fullName))
                 },
             )
 
@@ -50,20 +50,19 @@ fun InputArea(modifier: Modifier) {
                 labelText = "Sex",
                 modifier = Modifier.weight(3.5f),
                 items = listOf("Male", "Female"),
-                selectedValue = "",
-                onSelectedItem = {
-                    //
+                selectedValue = state.sex,
+                onSelectedItem = { sex ->
+                    residentViewModel.onEvent(event = ResidentEvent.SelectedSex(sex = sex))
                 })
-
 
 
             DropDownList(
                 labelText = "Suffix",
                 modifier = Modifier.weight(3.5f),
                 items = listOf("None", "Jr", "Sr", "III", "IV", "V"),
-                selectedValue = "",
-                onSelectedItem = {
-
+                selectedValue = state.suffix,
+                onSelectedItem = { suffix ->
+                    residentViewModel.onEvent(event = ResidentEvent.SelectedSuffix(suffix = suffix))
                 })
 
 
@@ -75,18 +74,18 @@ fun InputArea(modifier: Modifier) {
             TextFieldItem(
                 modifier = Modifier.weight(4.5f, fill = false),
                 labelText = "Address",
-                textFieldValue = textFieldValue.value,
-                onValueChange = {
-                    textFieldValue.value = it
+                textFieldValue = state.address,
+                onValueChange = { address ->
+                    residentViewModel.onEvent(event = ResidentEvent.EnteredAddress(address = address))
                 },
             )
 
             TextFieldItem(
                 modifier = Modifier.weight(3.0f, fill = false),
                 labelText = "Religion",
-                textFieldValue = textFieldValue.value,
-                onValueChange = {
-                    textFieldValue.value = it
+                textFieldValue = state.religion,
+                onValueChange = { religion ->
+                    residentViewModel.onEvent(event = ResidentEvent.EnteredReligion(religion = religion))
                 },
             )
 
@@ -94,9 +93,9 @@ fun InputArea(modifier: Modifier) {
                 labelText = "Civil Status",
                 modifier = Modifier.weight(2.5f),
                 items = listOf("Single", "Married", "Widowed","Divorced"),
-                selectedValue = "",
-                onSelectedItem = {
-
+                selectedValue = state.civilStatus,
+                onSelectedItem = { civilStatus ->
+                    residentViewModel.onEvent(event = ResidentEvent.SelectedCivilStatus(civilStatus = civilStatus))
                 })
         }
 
@@ -105,18 +104,18 @@ fun InputArea(modifier: Modifier) {
             TextFieldItem(
                 modifier = Modifier.weight(4.5f, fill = false),
                 labelText = "Contact Number",
-                textFieldValue = textFieldValue.value,
-                onValueChange = {
-                    textFieldValue.value = it
+                textFieldValue = state.contactNumber,
+                onValueChange = { contactNumber ->
+                    residentViewModel.onEvent(event = ResidentEvent.EnteredContactNumber(contactNumber = contactNumber))
                 },
             )
 
             TextFieldItem(
                 modifier = Modifier.weight(4.5f, fill = false),
                 labelText = "Purok",
-                textFieldValue = textFieldValue.value,
-                onValueChange = {
-                    textFieldValue.value = it
+                textFieldValue = state.purok,
+                onValueChange = { purok ->
+                    residentViewModel.onEvent(event = ResidentEvent.EnteredPurok(purok = purok))
                 },
             )
 
@@ -124,9 +123,9 @@ fun InputArea(modifier: Modifier) {
             TextFieldItem(
                 modifier = Modifier.weight(4.5f, fill = false),
                 labelText = "Occupation",
-                textFieldValue = textFieldValue.value,
-                onValueChange = {
-                    textFieldValue.value = it
+                textFieldValue = state.occupation,
+                onValueChange = { occupation ->
+                    residentViewModel.onEvent(event = ResidentEvent.EnteredOccupation(occupation = occupation))
                 },
             )
         }
@@ -138,27 +137,27 @@ fun InputArea(modifier: Modifier) {
                 labelText = "Voter",
                 modifier = Modifier.weight(2.5f),
                 items = listOf("No", "Yes"),
-                selectedValue = "",
-                onSelectedItem = {
-
+                selectedValue = state.voter,
+                onSelectedItem = { voter ->
+                    residentViewModel.onEvent(event = ResidentEvent.SelectedVoter(voter = voter))
                 })
 
 
             TextFieldItem(
                 modifier = Modifier.weight(4.5f, fill = false),
                 labelText = "Citizenship",
-                textFieldValue = textFieldValue.value,
-                onValueChange = {
-                    textFieldValue.value = it
+                textFieldValue = state.citizenship,
+                onValueChange = { citizenship ->
+                    residentViewModel.onEvent(event = ResidentEvent.EnteredCitizenship(citizenship = citizenship))
                 },
             )
 
             TextFieldItem(
                 modifier = Modifier.weight(4.5f, fill = false),
                 labelText = "Date of birth",
-                textFieldValue = textFieldValue.value,
-                onValueChange = {
-                    textFieldValue.value = it
+                textFieldValue = state.dateOfBirth,
+                onValueChange = { birthdate ->
+                    residentViewModel.onEvent(event = ResidentEvent.EnteredBirthdate(birthdate = birthdate))
                 },
                 placeholder = {
                     Text(
@@ -177,18 +176,18 @@ fun InputArea(modifier: Modifier) {
                 labelText = "Senior Citizen",
                 modifier = Modifier.weight(2.5f),
                 items = listOf("No", "Yes"),
-                selectedValue = "",
-                onSelectedItem = {
-
+                selectedValue = state.seniorCitizen,
+                onSelectedItem = { seniorCitizen ->
+                    residentViewModel.onEvent(event = ResidentEvent.SelectedSeniorCitizen(seniorCitizen = seniorCitizen))
                 })
 
 
             TextFieldItem(
                 modifier = Modifier.weight(4.5f, fill = false),
                 labelText = "Educational Attainment",
-                textFieldValue = textFieldValue.value,
-                onValueChange = {
-                    textFieldValue.value = it
+                textFieldValue = state.educationalAttainment,
+                onValueChange = { educationalAttainment ->
+                    residentViewModel.onEvent(event = ResidentEvent.EnteredEducationalAttainment(educationalAttainment = educationalAttainment))
                 },
             )
             Spacer(modifier = Modifier.weight(4.5f))

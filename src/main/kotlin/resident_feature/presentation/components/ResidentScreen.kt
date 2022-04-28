@@ -4,12 +4,13 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
+import resident_feature.presentation.ResidentEvent
 import resident_feature.presentation.ResidentViewModel
 import resident_feature.presentation.theme.Black800
 
@@ -17,8 +18,10 @@ import resident_feature.presentation.theme.Black800
 @Preview
 fun ResidentScreen() {
     val viewModel = remember { ResidentViewModel()}
+    val scope = rememberCoroutineScope()
+    val inputState = viewModel.inputState.value
 
-    
+
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -30,9 +33,9 @@ fun ResidentScreen() {
             modifier = Modifier
                 .fillMaxWidth(0.99f)
                 .padding(top = 20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center) {
 
-            val searchValue = remember { mutableStateOf(TextFieldValue()) }
 
             Row(
                 verticalAlignment = Alignment.Top,
@@ -41,13 +44,15 @@ fun ResidentScreen() {
 
 
                 ResetButton(buttonOnClick = {
-
+                    scope.launch {
+                        viewModel.onEvent(event = ResidentEvent.ResetResident)
+                    }
                 })
 
                 Spacer(modifier = Modifier.weight(0.6f))
 
-                SearchBar(value = searchValue.value, onChangeValue = {
-                    searchValue.value = it
+                SearchBar(value = inputState.searchQuery, onChangeValue = {
+                   viewModel.onEvent(event = ResidentEvent.EnteredSearchValue(searchQuery = it))
                 },
                     searchButtonOnClick = {
 
@@ -60,10 +65,9 @@ fun ResidentScreen() {
                 verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth(0.99f)
-                    .padding(top = 15.dp)
-            ) {
+                    .padding(top = 15.dp)) {
 
-                InputArea(modifier = Modifier.weight(0.83f))
+                InputArea(modifier = Modifier.weight(0.83f), residentViewModel = viewModel)
                 SelectProfilePictureArea(
                     modifier = Modifier.padding(start = 18.dp, top = 20.dp).weight(0.17f),
                     browseButtonOnClick = {},
