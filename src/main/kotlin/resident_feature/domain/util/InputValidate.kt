@@ -50,6 +50,17 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
         }
 
 
+        resident.suffix.isEmpty() -> {
+            throw ResidentsAuthentication.SuffixException("Field cannot be left blank.")
+        }
+
+        resident.sex.isEmpty() -> {
+            throw ResidentsAuthentication.SexException("Field cannot be left blank.")
+        }
+
+
+
+
 
 
 
@@ -77,6 +88,11 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
 
         containsNumeric(resident.religion) || containSpecialCharacters(resident.religion) -> {
             throw ResidentsAuthentication.ReligionException("Religion must not contain Numbers or Special Characters.")
+        }
+
+
+        resident.civilStatus.isEmpty() -> {
+            throw ResidentsAuthentication.CivilStatusException("Field cannot be left blank.")
         }
 
 
@@ -112,7 +128,10 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
             throw ResidentsAuthentication.OccupationException("Occupation must not contain Numbers or Special Characters.")
         }
 
-        //todo ADD VALIDATION FOR PROFILE IMAGE
+
+        resident.voter.isEmpty() -> {
+            throw ResidentsAuthentication.VoterException("Field cannot be left blank.")
+        }
 
         resident.citizenship.isEmpty() -> {
             throw ResidentsAuthentication.CitizenshipException("Field cannot be left blank.")
@@ -133,6 +152,9 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
         }
 
 
+        resident.seniorCitizen.isEmpty() -> {
+            throw ResidentsAuthentication.SeniorCitizenException("Field cannot be left blank.")
+        }
 
 
         resident.educationalAttainment.isEmpty() -> {

@@ -320,7 +320,22 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                     }
                     is ResidentsAuthentication.ProfileImageException -> {
                         _inputState.value =
-                            this@with.copy(profileImageErrorMessage = exception.message ?: "Profile Image is Blank")
+                            this@with.copy(profileImageErrorMessage = exception.message ?: "Profile Image is Empty")
+                    }
+                    is ResidentsAuthentication.SuffixException -> {
+                        _inputState.value = this@with.copy(suffixErrorMessage = exception.message ?: "Field cannot be left blank.")
+                    }
+                    is ResidentsAuthentication.SexException -> {
+                        _inputState.value = this@with.copy(sexErrorMessage = exception.message ?: "Field cannot be left blank.")
+                    }
+                    is ResidentsAuthentication.CivilStatusException -> {
+                        _inputState.value = this@with.copy(civilStatusErrorMessage = exception.message ?: "Field cannot be left blank.")
+                    }
+                    is ResidentsAuthentication.VoterException -> {
+                        _inputState.value = this@with.copy(voterErrorMessage = exception.message ?: "Field cannot be left blank.")
+                    }
+                    is ResidentsAuthentication.SeniorCitizenException -> {
+                        _inputState.value = this@with.copy(seniorCitizenErrorMessage = exception.message ?: "Field cannot be left blank.")
                     }
                 }
             }
