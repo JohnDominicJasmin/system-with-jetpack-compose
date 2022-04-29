@@ -45,7 +45,7 @@ fun TextFieldItem(
         )
 
         TextField(
-            modifier = Modifier.height(50.dp).fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             value = textFieldValue,
             shape = RoundedCornerShape(12.dp),
             onValueChange = onValueChange,
