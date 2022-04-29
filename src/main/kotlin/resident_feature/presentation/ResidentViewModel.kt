@@ -173,8 +173,8 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                         kotlin.runCatching {
                             //TODO: SHOW YES ON NO DIALOG, NO NEED TO SHOW THIS RESIDENT TO INPUTS
                             residentsUseCase.deleteResidentUseCase(event.residentId)
-                            //todo: after deleting refresh table
                         }.onSuccess {
+                            loadResidents(columnOrder = inputState.value.orderType)
                             _eventFlow.emit(
                                 value =
                                 ResidentEventResult.ShowAlertDialog(
@@ -263,6 +263,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
             }.onSuccess {
                 _inputState.value = this@with.copy(isLoading = false)
                 loadResidents(columnOrder = inputState.value.orderType)
+                _inputState.value = ResidentInputState()
                 _eventFlow.emit(
                         value = ResidentEventResult.ShowAlertDialog(
                             title = "Success",
@@ -345,6 +346,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
     }
 
     private fun getAge(dobString: String): Int {
+        //Copied from Stackoverflow.
         var date: Date? = null
         val sdf = SimpleDateFormat("dd/MM/yyyy")
 
