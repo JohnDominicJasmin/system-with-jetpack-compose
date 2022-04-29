@@ -101,14 +101,14 @@ private fun TableItem(modifier: Modifier, resident: Resident, backgroundColor: C
 
 
             Text(
-                text = resident.sex.javaClass.simpleName,
+                text = resident.sex,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(SEX_ROW_WEIGHT)
             )
 
             Text(
-                text = resident.age.toString(),
+                text = resident.age,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(AGE_ROW_WEIGHT)
@@ -128,7 +128,7 @@ private fun TableItem(modifier: Modifier, resident: Resident, backgroundColor: C
             )
 
             Text(
-                text = resident.voter.javaClass.simpleName,
+                text = resident.voter,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(VOTER_ROW_WEIGHT)

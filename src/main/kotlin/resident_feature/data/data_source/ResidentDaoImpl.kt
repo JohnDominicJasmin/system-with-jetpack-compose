@@ -1,5 +1,6 @@
 package resident_feature.data.data_source
 
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import resident_feature.common.Constants.CONNECTION_URL
@@ -8,46 +9,43 @@ import resident_feature.domain.model.Resident
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.PreparedStatement
-import java.sql.Statement
 
 class ResidentDaoImpl(
     private val connection: Connection = DriverManager.getConnection(CONNECTION_URL)
 ) : ResidentDao {
 
     override fun getResidents(): Flow<List<Resident>> = flow {
-        val statement: Statement = connection.createStatement()
-        val resultSet = statement.executeQuery("SELECT * FROM RESIDENTS")
-
+        val residents = mutableListOf<Resident>()
+        val statement: PreparedStatement = connection.prepareStatement("SELECT * FROM Residents")
+        val resultSet = statement.executeQuery()
         while (resultSet.next()) {
-
-            emit(
-                value = listOf(
-                    Resident(
-                        id = resultSet.getInt("ID"),
-                        fullName = resultSet.getString("FULLNAME"),
-                        suffix = resultSet.getString("SUFFIX"),
-                        sex = resultSet.getString("SEX"),
-                        dateOfBirth = resultSet.getString("BIRTHDATE"),
-                        age = resultSet.getString("AGE"),
-                        occupation = resultSet.getString("OCCUPATION"),
-                        religion = resultSet.getString("RELIGION"),
-                        educationalAttainment = resultSet.getString("EDUCATIONAL_ATTAINMENT"),
-                        purok = resultSet.getString("PUROK"),
-                        address = resultSet.getString("ADDRESS"),
-                        civilStatus = resultSet.getString("CIVIL_STATUS"),
-                        voter = resultSet.getString("REGISTERED_VOTER"),
-                        contactNumber = resultSet.getString("CONTACT_NUMBER"),
-                        citizenship = resultSet.getString("CITIZENSHIP"),
-                        seniorCitizen = resultSet.getString("SENIOR_CITIZEN"),
-                        imageName = resultSet.getString("IMAGE_NAME")
-
-
-                    )
-                )
-            )
+            residents.add(Resident(
+                id = resultSet.getInt("ID"),
+                fullName = resultSet.getString("FULLNAME"),
+                suffix = resultSet.getString("SUFFIX"),
+                sex = resultSet.getString("SEX"),
+                dateOfBirth = resultSet.getString("BIRTHDATE"),
+                age = resultSet.getString("AGE"),
+                occupation = resultSet.getString("OCCUPATION"),
+                religion = resultSet.getString("RELIGION"),
+                educationalAttainment = resultSet.getString("EDUCATIONAL_ATTAINMENT"),
+                purok = resultSet.getString("PUROK"),
+                address = resultSet.getString("ADDRESS"),
+                civilStatus = resultSet.getString("CIVIL_STATUS"),
+                voter = resultSet.getString("REGISTERED_VOTER"),
+                contactNumber = resultSet.getString("CONTACT_NUMBER"),
+                citizenship = resultSet.getString("CITIZENSHIP"),
+                seniorCitizen = resultSet.getString("SENIOR_CITIZEN"),
+                imageName = resultSet.getString("IMAGE_NAME")
+            ))
         }
-        statement.close()
-        connection.close()
+
+        emit(residents).also {
+           delay(300)
+            statement.close()
+            connection.close()
+        }
+
 
     }
 
@@ -57,7 +55,7 @@ class ResidentDaoImpl(
         try {
             val statement: PreparedStatement = connection.prepareStatement(
                 "INSERT INTO Residents (FULLNAME, SUFFIX, SEX, BIRTHDATE, AGE, OCCUPATION, RELIGION, EDUCATIONAL_ATTAINMENT, PUROK, ADDRESS, CIVIL_STATUS, REGISTERED_VOTER, CONTACT_NUMBER, CITIZENSHIP, SENIOR_CITIZEN, IMAGE_NAME)\n" +
-                        "VALUES (? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? )"
+                        "VALUES (? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? )"
             )
 
             with(statement) {
@@ -77,7 +75,7 @@ class ResidentDaoImpl(
                     setString(13, contactNumber.trimEnd())
                     setString(14, citizenship.trimEnd())
                     setString(15, seniorCitizen.trimEnd())
-                    setString(17, imageName)
+                    setString(16, imageName)
                 }
             }
 
@@ -131,8 +129,8 @@ class ResidentDaoImpl(
                     setString(13, contactNumber)
                     setString(14, citizenship)
                     setString(15, seniorCitizen)
-                    setString(17, imageName)
-                    setInt(18, id)
+                    setString(16, imageName)
+                    setInt(17, id)
                 }
             }
 

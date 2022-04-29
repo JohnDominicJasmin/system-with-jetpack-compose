@@ -10,7 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import resident_feature.domain.exceptions.ResidentsAuthentication
 import resident_feature.domain.model.Resident
@@ -110,7 +110,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                         }
                 }
                 is ResidentEvent.UpdateResident -> {
-                    CoroutineScope(Dispatchers.Default).launch {
+                    CoroutineScope(Dispatchers.IO).launch {
                         manipulateData(successMessage = "Resident Successfully Updated!", onManipulate = {
                             residentsUseCase.updateResidentUseCase(
                                 resident = Resident(
@@ -138,7 +138,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 }
                 is ResidentEvent.SaveResident -> {
 
-                    CoroutineScope(Dispatchers.Default).launch {
+                    CoroutineScope(Dispatchers.IO).launch {
                         manipulateData(successMessage = "Resident Successfully Added!", onManipulate = {
                             residentsUseCase.addResidentUseCase(
                                 resident = Resident(
@@ -169,11 +169,11 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                     _inputState.value = this.copy(isSaveButtonEnable = true, isUpdateButtonEnable = false)
                 }
                 is ResidentEvent.DeleteResident -> {
-                    CoroutineScope(Dispatchers.Default).launch {
+                    CoroutineScope(Dispatchers.IO).launch {
                         kotlin.runCatching {
                             //TODO: SHOW YES ON NO DIALOG, NO NEED TO SHOW THIS RESIDENT TO INPUTS
                             residentsUseCase.deleteResidentUseCase(event.residentId)
-
+                            //todo: after deleting refresh table
                         }.onSuccess {
                             _eventFlow.emit(
                                 value =
@@ -246,10 +246,9 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
     }
 
     private fun loadResidents(columnOrder: OrderType) {
-
-        job?.cancel()
-        job = CoroutineScope(Dispatchers.Default).launch {
-            residentsUseCase.getResidentsUseCase(columnOrder).onEach { residents ->
+        _inputState.value = inputState.value.copy(orderType = columnOrder)
+        job = CoroutineScope(Dispatchers.Main).launch {
+            residentsUseCase.getResidentsUseCase(columnOrder).collect { residents ->
                 _tableState.value = tableState.value.copy(residents = residents, columnOrder = columnOrder)
             }
         }
@@ -263,6 +262,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 onManipulate()
             }.onSuccess {
                 _inputState.value = this@with.copy(isLoading = false)
+                loadResidents(columnOrder = inputState.value.orderType)
                 _eventFlow.emit(
                         value = ResidentEventResult.ShowAlertDialog(
                             title = "Success",

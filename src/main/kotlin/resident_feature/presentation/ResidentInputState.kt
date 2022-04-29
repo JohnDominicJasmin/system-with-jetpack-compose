@@ -1,6 +1,7 @@
 package resident_feature.presentation
 
 import androidx.compose.ui.text.input.TextFieldValue
+import resident_feature.domain.util.OrderType
 import resident_feature.util.DrawableResource
 
 data class ResidentInputState(
@@ -53,7 +54,7 @@ data class ResidentInputState(
     var seniorCitizen : String = "",
     var seniorCitizenErrorMessage: String = "",
 
-
+    var orderType : OrderType = OrderType.FullNameColumnOrder.Ascending,
 
 
 
