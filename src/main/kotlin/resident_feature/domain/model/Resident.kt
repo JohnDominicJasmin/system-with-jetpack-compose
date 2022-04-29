@@ -18,5 +18,4 @@ data class Resident(
     val seniorCitizen: String,
     val educationalAttainment: String,
     val imageName: String,
-    val localImagePath: String
     )

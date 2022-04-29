@@ -1,6 +1,7 @@
 package resident_feature.presentation
 
 import androidx.compose.ui.text.input.TextFieldValue
+import resident_feature.util.DrawableResource
 
 data class ResidentInputState(
     var searchQuery: TextFieldValue = TextFieldValue(""),
@@ -59,8 +60,7 @@ data class ResidentInputState(
     var isUpdateButtonEnable : Boolean = false,
     var isSaveButtonEnable : Boolean = true,
 
-    var imagePath: String = "",
-    var imageName :String = "",
+    var imageName :String = DrawableResource.ProfilePlaceHolder.resource,
     var profileImageErrorMessage: String = "",
 
     var isLoading: Boolean = false

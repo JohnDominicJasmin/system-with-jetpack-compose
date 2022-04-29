@@ -93,16 +93,21 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                     _inputState.value = this.copy(educationalAttainment = event.educationalAttainment, educationalAttainmentErrorMessage = "")
                 }
                 is ResidentEvent.BrowseImage -> {
-                    CoroutineScope(Dispatchers.Default).launch {
+
                         residentsUseCase.openFileUseCase { selectedFile ->
-                            _inputState.value =
-                                this@with.copy(imagePath = selectedFile.canonicalPath, imageName = selectedFile.name)
-                        }.also{
-                            residentsUseCase.saveImageToLocalFolderUseCase(
-                                filePath = inputState.value.imagePath, fileName = inputState.value.imageName
-                            )
+                            CoroutineScope(Dispatchers.Main).launch {
+
+                                if(selectedFile.canonicalPath.contains("/local_images/")) {
+                                    _inputState.value = this@with.copy(imageName = selectedFile.name)
+                                }else{
+                                    _eventFlow.emit(value = ResidentEventResult.ShowAlertDialog(
+                                        title = "Error",
+                                        description = "Move the image to local_image folder to continue.",
+                                         imageResource = ""
+                                    ))
+                                }
+                                }
                         }
-                    }
                 }
                 is ResidentEvent.UpdateResident -> {
                     CoroutineScope(Dispatchers.Default).launch {
@@ -125,7 +130,6 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                                     seniorCitizen = seniorCitizen,
                                     educationalAttainment = educationalAttainment.text,
                                     imageName = imageName,
-                                    localImagePath = imagePath,
                                     id = id,
                                 )
                             )
@@ -154,7 +158,6 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                                     seniorCitizen = seniorCitizen,
                                     educationalAttainment = educationalAttainment.text,
                                     imageName = imageName,
-                                    localImagePath = imagePath
                                 )
                             )
                         })
@@ -236,7 +239,6 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 educationalAttainment = TextFieldValue(text = resident.educationalAttainment),
                 isUpdateButtonEnable = true,
                 isSaveButtonEnable = false,
-                imagePath = resident.localImagePath,
                 imageName = resident.imageName,
                 isLoading = false,
             )
@@ -261,17 +263,13 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 onManipulate()
             }.onSuccess {
                 _inputState.value = this@with.copy(isLoading = false)
-                residentsUseCase.saveImageToLocalFolderUseCase(
-                    filePath = inputState.value.imagePath, fileName = inputState.value.imageName
-                ).also {
-                    _eventFlow.emit(
+                _eventFlow.emit(
                         value = ResidentEventResult.ShowAlertDialog(
                             title = "Success",
                             description = successMessage,
                             imageResource = ""
                         )
                     )
-                }
             }.onFailure { exception ->
                 _inputState.value = this@with.copy(isLoading = false)
                 when (exception) {

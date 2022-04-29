@@ -6,6 +6,7 @@ import resident_feature.common.Constants.REGEX_SPECIAL_CHARACTERS_VALUE
 import resident_feature.common.Constants.USER_INPUT_MINIMUM_NUMBER_OF_CHARACTERS
 import resident_feature.domain.exceptions.ResidentsAuthentication
 import resident_feature.domain.model.Resident
+import resident_feature.util.DrawableResource
 import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 
@@ -160,7 +161,7 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
         }
 
 
-        resident.imageName.isEmpty() || resident.localImagePath.isEmpty() -> {
+        resident.imageName == DrawableResource.ProfilePlaceHolder.resource -> {
             throw ResidentsAuthentication.ProfileImageException("Profile Image cannot be left blank.")
         }
 

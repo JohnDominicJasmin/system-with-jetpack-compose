@@ -39,7 +39,6 @@ class ResidentDaoImpl(
                         contactNumber = resultSet.getString("CONTACT_NUMBER"),
                         citizenship = resultSet.getString("CITIZENSHIP"),
                         seniorCitizen = resultSet.getString("SENIOR_CITIZEN"),
-                        localImagePath = resultSet.getString("IMAGE_PATH"),
                         imageName = resultSet.getString("IMAGE_NAME")
 
 
@@ -57,7 +56,7 @@ class ResidentDaoImpl(
 
         try {
             val statement: PreparedStatement = connection.prepareStatement(
-                "INSERT INTO Residents (FULLNAME, SUFFIX, SEX, BIRTHDATE, AGE, OCCUPATION, RELIGION, EDUCATIONAL_ATTAINMENT, PUROK, ADDRESS, CIVIL_STATUS, REGISTERED_VOTER, CONTACT_NUMBER, CITIZENSHIP, SENIOR_CITIZEN, IMAGE_PATH, IMAGE_NAME)\n" +
+                "INSERT INTO Residents (FULLNAME, SUFFIX, SEX, BIRTHDATE, AGE, OCCUPATION, RELIGION, EDUCATIONAL_ATTAINMENT, PUROK, ADDRESS, CIVIL_STATUS, REGISTERED_VOTER, CONTACT_NUMBER, CITIZENSHIP, SENIOR_CITIZEN, IMAGE_NAME)\n" +
                         "VALUES (? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? )"
             )
 
@@ -78,7 +77,6 @@ class ResidentDaoImpl(
                     setString(13, contactNumber.trimEnd())
                     setString(14, citizenship.trimEnd())
                     setString(15, seniorCitizen.trimEnd())
-                    setString(16, localImagePath)
                     setString(17, imageName)
                 }
             }
@@ -113,7 +111,7 @@ class ResidentDaoImpl(
 
         try {
             val statement: PreparedStatement =
-                connection.prepareStatement("UPDATE Residents SET FULLNAME = ?, SUFFIX = ?, SEX = ?, BIRTHDATE = ?, AGE = ?, OCCUPATION = ?, RELIGION = ?, EDUCATIONAL_ATTAINMENT = ?, PUROK = ?, ADDRESS = ?, CIVIL_STATUS = ?, REGISTERED_VOTER = ?, CONTACT_NUMBER = ?, CITIZENSHIP = ?, SENIOR_CITIZEN = ?, IMAGE_PATH = ?, IMAGE_NAME = ? WHERE ID = ?")
+                connection.prepareStatement("UPDATE Residents SET FULLNAME = ?, SUFFIX = ?, SEX = ?, BIRTHDATE = ?, AGE = ?, OCCUPATION = ?, RELIGION = ?, EDUCATIONAL_ATTAINMENT = ?, PUROK = ?, ADDRESS = ?, CIVIL_STATUS = ?, REGISTERED_VOTER = ?, CONTACT_NUMBER = ?, CITIZENSHIP = ?, SENIOR_CITIZEN = ?, IMAGE_NAME = ? WHERE ID = ?")
 
 
             with(statement) {
@@ -133,7 +131,6 @@ class ResidentDaoImpl(
                     setString(13, contactNumber)
                     setString(14, citizenship)
                     setString(15, seniorCitizen)
-                    setString(16, localImagePath)
                     setString(17, imageName)
                     setInt(18, id)
                 }

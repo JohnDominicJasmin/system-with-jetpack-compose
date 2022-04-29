@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import resident_feature.presentation.theme.Blue700
 import resident_feature.presentation.theme.Blue950
 import resident_feature.presentation.theme.Gray200
-import resident_feature.util.DrawableResource
 
 @Composable
 fun SelectProfilePictureArea(
@@ -36,19 +35,15 @@ fun SelectProfilePictureArea(
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
 
-        //todo test browse image and post it,
-        //todo on reset button click reset image to default mode
-        //todo after resetting the state from image name should clear(back to normal)
 
         Column {
             Surface(modifier = Modifier.fillMaxHeight(0.3f), shape = RoundedCornerShape(15.dp)) {
                 Image(
-                    painter = painterResource(DrawableResource.ProfilePlaceHolder.resource),
+                    painter = painterResource(imageResource),
                     contentDescription = "Picture Placeholder ",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.FillBounds
                 )
-
             }
             if (hasError) {
                 ErrorMessage(errorMessage)

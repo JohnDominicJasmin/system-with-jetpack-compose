@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import resident_feature.presentation.ResidentEvent
 import resident_feature.presentation.ResidentViewModel
 import resident_feature.presentation.theme.Black800
+import resident_feature.util.DrawableResource
 
 @Composable
 @Preview
@@ -69,12 +70,14 @@ fun ResidentScreen() {
 
                 InputArea(modifier = Modifier.weight(0.83f), residentViewModel = viewModel)
 
+                val imageResource = if(inputState.imageName != DrawableResource.ProfilePlaceHolder.resource) "/local_images/${inputState.imageName}" else DrawableResource.ProfilePlaceHolder.resource
+
                 SelectProfilePictureArea(
                     modifier = Modifier
                         .padding(start = 18.dp, top = 20.dp)
                         .weight(0.17f),
                     errorMessage = inputState.profileImageErrorMessage,
-                    imageResource = inputState.imagePath + inputState.imageName,
+                    imageResource =  imageResource,
                     browseButtonOnClick = {
                         viewModel.onEvent(event = ResidentEvent.BrowseImage)
                     },
