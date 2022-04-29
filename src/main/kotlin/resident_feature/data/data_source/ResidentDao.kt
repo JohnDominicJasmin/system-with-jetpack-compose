@@ -11,5 +11,4 @@ interface ResidentDao {
     suspend fun deleteResident(residentId: Int)
 
 
-
 }

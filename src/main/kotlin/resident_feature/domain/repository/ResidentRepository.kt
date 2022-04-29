@@ -10,5 +10,4 @@ interface ResidentRepository {
     suspend fun updateResident(resident: Resident)
     suspend fun deleteResident(residentId: Int)
     fun openFile(onSelectedImage: (File) -> Unit)
-    suspend fun saveImageToLocalFolder(filePath: String, fileName: String)
 }

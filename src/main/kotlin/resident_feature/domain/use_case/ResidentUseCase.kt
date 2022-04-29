@@ -6,5 +6,4 @@ data class ResidentUseCase(
     val getResidentsUseCase: GetResidentsUseCase = GetResidentsUseCase(),
     val updateResidentUseCase: UpdateResidentUseCase = UpdateResidentUseCase(),
     val openFileUseCase: OpenFileUseCase = OpenFileUseCase(),
-    val saveImageToLocalFolderUseCase: SaveImageToLocalFolderUseCase = SaveImageToLocalFolderUseCase()
 )

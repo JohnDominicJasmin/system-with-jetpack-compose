@@ -1,15 +1,12 @@
 package resident_feature.data.repository
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 import resident_feature.common.Constants
 import resident_feature.data.data_source.ResidentDao
 import resident_feature.data.data_source.ResidentDaoImpl
 import resident_feature.domain.model.Resident
 import resident_feature.domain.repository.ResidentRepository
 import java.io.File
-import javax.imageio.ImageIO
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
@@ -51,11 +48,5 @@ class ResidentRepositoryImpl(private val residentDao: ResidentDao = ResidentDaoI
         }
     }
 
-    override suspend fun saveImageToLocalFolder(filePath: String, fileName: String) {
-     withContext(Dispatchers.IO) {
-                ImageIO.read(File(filePath)).also { image ->
-                    ImageIO.write(image, "png", File(Constants.SELECTED_IMAGE_PATH_DESTINATION + fileName))
-                }
-            }
-    }
+
 }
