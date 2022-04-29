@@ -41,7 +41,7 @@ class ResidentRepositoryImpl(private val residentDao: ResidentDao = ResidentDaoI
         }
         chooser.apply {
             this.currentDirectory = file
-            this.fileFilter = FileNameExtensionFilter("Images", "jpg", "gif", "png")
+            this.fileFilter = FileNameExtensionFilter("Images", "jpg", "png", "jpeg")
             this.dialogTitle = "Select Profile Image"
         }
             chooser.showOpenDialog(null).apply {
