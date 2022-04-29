@@ -1,6 +1,5 @@
 package resident_feature.data.data_source
 
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import resident_feature.common.Constants.CONNECTION_URL
@@ -11,7 +10,7 @@ import java.sql.DriverManager
 import java.sql.PreparedStatement
 
 class ResidentDaoImpl(
-    private val connection: Connection = DriverManager.getConnection(CONNECTION_URL)
+    private val connection: Connection = DriverManager.getConnection(CONNECTION_URL),
 ) : ResidentDao {
 
     override fun getResidents(): Flow<List<Resident>> = flow {
@@ -40,11 +39,7 @@ class ResidentDaoImpl(
             ))
         }
 
-        emit(residents).also {
-           delay(300)
-            statement.close()
-            connection.close()
-        }
+        emit(residents)
 
 
     }
@@ -94,13 +89,13 @@ class ResidentDaoImpl(
     }
     private fun handleManipulationException(errorMessage: String, resident: Resident){
         if(errorMessage.contains("FULLNAME")){
-            throw ResidentsAuthentication.ResidentsManipulationException(message = "Name '${resident.fullName}' is already used!")
+            throw ResidentsAuthentication.FullNameException(message = "Name is already used!")
         }
         if(errorMessage.contains("CONTACT_NUMBER")){
-            throw ResidentsAuthentication.ResidentsManipulationException(message = "Contact Number '${resident.contactNumber}' is already used.")
+            throw ResidentsAuthentication.ContactNumberException(message = "Contact Number is already used.")
         }
         if(errorMessage.contains("IMAGE_NAME")){
-            throw ResidentsAuthentication.ResidentsManipulationException(message = "Image is already used.")
+            throw ResidentsAuthentication.ProfileImageException(message = "Image is already used.")
         }
         throw ResidentsAuthentication.ResidentsManipulationException(message = errorMessage)
     }
