@@ -170,7 +170,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 },
                 placeholder = {
                     Text(
-                        text = "MM/DD/YY",
+                        text = "DD/MM/YY",
                         color = Gray300,
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.caption
