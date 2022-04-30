@@ -136,7 +136,9 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
             throw ResidentsAuthentication.CitizenshipException("Citizenship must not contain Numbers or Special Characters.")
         }
 
-
+        resident.age.toInt() < 0 -> {
+            throw ResidentsAuthentication.DateException("Birthdate is Invalid!")
+        }
 
         resident.dateOfBirth.isEmpty() -> {
             throw ResidentsAuthentication.DateException("Field cannot be left blank.")
