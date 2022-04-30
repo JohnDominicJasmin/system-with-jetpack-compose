@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import resident_feature.presentation.ResidentEvent
 import resident_feature.presentation.ResidentViewModel
-import resident_feature.presentation.theme.Gray300
+import resident_feature.presentation.theme.Gray500
 
 
 @Composable
@@ -110,6 +110,14 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 onValueChange = { contactNumber ->
                     residentViewModel.onEvent(event = ResidentEvent.EnteredContactNumber(contactNumber = contactNumber))
                 },
+                placeholder = {
+                    Text(
+                        text = "e.g. 09123456789",
+                        color = Gray500,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.caption
+                    )
+                },
             )
 
             TextFieldItem(
@@ -168,7 +176,7 @@ fun InputArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                 placeholder = {
                     Text(
                         text = "DD/MM/YY",
-                        color = Gray300,
+                        color = Gray500,
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.caption
                     )
