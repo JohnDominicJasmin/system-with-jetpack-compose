@@ -102,7 +102,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                                 }else{
                                     _eventFlow.emit(value = ResidentEventResult.ShowAlertDialog(
                                         title = "Error",
-                                        description = "Move the image to local_image folder to continue.",
+                                        description = "Move the image to 'local_image' folder to continue.",
                                          imageResource = ""
                                     ))
                                 }
@@ -168,12 +168,15 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                     loadResident(resident = event.resident)
                     _inputState.value = this.copy(isSaveButtonEnable = true, isUpdateButtonEnable = false)
                 }
+
                 is ResidentEvent.DeleteResident -> {
                     CoroutineScope(Dispatchers.IO).launch {
                         kotlin.runCatching {
                             //TODO: SHOW YES ON NO DIALOG, NO NEED TO SHOW THIS RESIDENT TO INPUTS
+                            _inputState.value = this@with.copy(isLoading = true)
                             residentsUseCase.deleteResidentUseCase(event.residentId)
                         }.onSuccess {
+                            _inputState.value = this@with.copy(isLoading = false)
                             loadResidents(columnOrder = inputState.value.orderType)
                             _eventFlow.emit(
                                 value =
@@ -184,6 +187,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                                 )
                             )
                         }.onFailure {
+                            _inputState.value = this@with.copy(isLoading = false)
                             _eventFlow.emit(
                                 value =
                                 ResidentEventResult.ShowAlertDialog(

@@ -3,6 +3,7 @@ package resident_feature.presentation.components
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 import resident_feature.presentation.ResidentEvent
 import resident_feature.presentation.ResidentViewModel
 import resident_feature.presentation.theme.Black800
+import resident_feature.presentation.theme.Blue700
 import resident_feature.util.DrawableResource
 
 @Composable
@@ -83,8 +85,10 @@ fun ResidentScreen() {
                     },
                     saveButtonOnClick = { viewModel.onEvent(event = ResidentEvent.SaveResident)},
                     updateButtonOnClick = { viewModel.onEvent(event = ResidentEvent.UpdateResident)})
+            }
 
-
+            if(inputState.isLoading) {
+                CircularProgressIndicator(color = Blue700)
             }
 
             TableItemsArea(
