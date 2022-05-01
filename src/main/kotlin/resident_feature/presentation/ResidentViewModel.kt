@@ -37,7 +37,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
         loadResidents(columnOrder = OrderType.FullNameColumnOrder.Ascending)
     }
 
-      fun onEvent(event: ResidentEvent) {
+    fun onEvent(event: ResidentEvent) {
 
         with(inputState.value) {
             when (event) {
@@ -90,24 +90,29 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                     _inputState.value = this.copy(seniorCitizen = event.seniorCitizen, seniorCitizenErrorMessage = "")
                 }
                 is ResidentEvent.EnteredEducationalAttainment -> {
-                    _inputState.value = this.copy(educationalAttainment = event.educationalAttainment, educationalAttainmentErrorMessage = "")
+                    _inputState.value = this.copy(
+                        educationalAttainment = event.educationalAttainment,
+                        educationalAttainmentErrorMessage = ""
+                    )
                 }
                 is ResidentEvent.BrowseImage -> {
 
-                        residentsUseCase.openFileUseCase { selectedFile ->
-                            CoroutineScope(Dispatchers.Main).launch {
-                                _inputState.value = this@with.copy(profileImageErrorMessage = "")
-                                if(selectedFile.canonicalPath.contains("/local_images/")) {
-                                    _inputState.value = this@with.copy(imageName = selectedFile.name)
-                                }else{
-                                    _eventFlow.emit(value = ResidentEventResult.ShowAlertDialog(
+                    residentsUseCase.openFileUseCase { selectedFile ->
+                        CoroutineScope(Dispatchers.Main).launch {
+                            _inputState.value = this@with.copy(profileImageErrorMessage = "")
+                            if (selectedFile.canonicalPath.contains("/local_images/")) {
+                                _inputState.value = this@with.copy(imageName = selectedFile.name)
+                            } else {
+                                _eventFlow.emit(
+                                    value = ResidentEventResult.ShowAlertDialog(
+                                        alertDialogType = AlertDialogType.ErrorDialog,
                                         title = "Error",
                                         description = "Move the image to 'local_image' folder to continue.",
-                                         imageResource = ""
-                                    ))
-                                }
-                                }
+                                    )
+                                )
+                            }
                         }
+                    }
                 }
                 is ResidentEvent.UpdateResident -> {
                     CoroutineScope(Dispatchers.IO).launch {
@@ -181,9 +186,9 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                             _eventFlow.emit(
                                 value =
                                 ResidentEventResult.ShowAlertDialog(
+                                    alertDialogType = AlertDialogType.SuccessDialog,
                                     title = "Success",
                                     description = "Resident Successfully Deleted",
-                                    imageResource = ""
                                 )
                             )
                         }.onFailure {
@@ -191,9 +196,9 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                             _eventFlow.emit(
                                 value =
                                 ResidentEventResult.ShowAlertDialog(
+                                    alertDialogType = AlertDialogType.ErrorDialog,
                                     title = "Failed",
                                     description = "Resident Failed to Deleted",
-                                    imageResource = ""
                                 )
                             )
                         }
@@ -269,21 +274,21 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 loadResidents(columnOrder = inputState.value.orderType)
                 _inputState.value = ResidentInputState()
                 _eventFlow.emit(
-                        value = ResidentEventResult.ShowAlertDialog(
-                            title = "Success",
-                            description = successMessage,
-                            imageResource = ""
-                        )
+                    value = ResidentEventResult.ShowAlertDialog(
+                        alertDialogType = AlertDialogType.SuccessDialog,
+                        title = "Success",
+                        description = successMessage,
                     )
+                )
             }.onFailure { exception ->
                 _inputState.value = this@with.copy(isLoading = false)
                 when (exception) {
                     is ResidentsAuthentication.ResidentsManipulationException -> {
                         _eventFlow.emit(
                             ResidentEventResult.ShowAlertDialog(
+                                alertDialogType = AlertDialogType.ErrorDialog,
                                 title = "Error",
                                 description = exception.message ?: "Unfortunately error occurred, please try again.",
-                                imageResource = ""
                             )
                         )
                     }
@@ -330,19 +335,25 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                             this@with.copy(profileImageErrorMessage = exception.message ?: "Profile Image is Empty")
                     }
                     is ResidentsAuthentication.SuffixException -> {
-                        _inputState.value = this@with.copy(suffixErrorMessage = exception.message ?: "Field cannot be left blank.")
+                        _inputState.value =
+                            this@with.copy(suffixErrorMessage = exception.message ?: "Field cannot be left blank.")
                     }
                     is ResidentsAuthentication.SexException -> {
-                        _inputState.value = this@with.copy(sexErrorMessage = exception.message ?: "Field cannot be left blank.")
+                        _inputState.value =
+                            this@with.copy(sexErrorMessage = exception.message ?: "Field cannot be left blank.")
                     }
                     is ResidentsAuthentication.CivilStatusException -> {
-                        _inputState.value = this@with.copy(civilStatusErrorMessage = exception.message ?: "Field cannot be left blank.")
+                        _inputState.value =
+                            this@with.copy(civilStatusErrorMessage = exception.message ?: "Field cannot be left blank.")
                     }
                     is ResidentsAuthentication.VoterException -> {
-                        _inputState.value = this@with.copy(voterErrorMessage = exception.message ?: "Field cannot be left blank.")
+                        _inputState.value =
+                            this@with.copy(voterErrorMessage = exception.message ?: "Field cannot be left blank.")
                     }
                     is ResidentsAuthentication.SeniorCitizenException -> {
-                        _inputState.value = this@with.copy(seniorCitizenErrorMessage = exception.message ?: "Field cannot be left blank.")
+                        _inputState.value = this@with.copy(
+                            seniorCitizenErrorMessage = exception.message ?: "Field cannot be left blank."
+                        )
                     }
                 }
             }
