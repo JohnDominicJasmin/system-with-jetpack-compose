@@ -59,8 +59,8 @@ data class ResidentInputState(
 
 
 
-    var isUpdateButtonEnable : Boolean = false,//todo : use this
-    var isSaveButtonEnable : Boolean = true,//todo : use this
+    var isUpdateButtonEnable : Boolean = false,
+    var isSaveButtonEnable : Boolean = true,
 
     var imageName :String = DrawableResource.ProfilePlaceHolder.resource,
     var profileImageErrorMessage: String = "",

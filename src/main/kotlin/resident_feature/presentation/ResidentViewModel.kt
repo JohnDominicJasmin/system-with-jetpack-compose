@@ -171,8 +171,8 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 }
 
                 is ResidentEvent.EditResident -> {
+                    _inputState.value = this.copy(isSaveButtonEnable = true, isUpdateButtonEnable = false)
                     loadResident(resident = event.resident)
-                    //todo _inputState.value = this.copy(isSaveButtonEnable = true, isUpdateButtonEnable = false)
                 }
 
                 is ResidentEvent.DeleteResident -> {
@@ -206,8 +206,8 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                     }
                 }
                 is ResidentEvent.SelectResidentRow -> {
+                    _inputState.value = this.copy(isSaveButtonEnable = false, isUpdateButtonEnable = false)
                     loadResident(resident = event.resident)
-                    //todo _inputState.value = this.copy(isSaveButtonEnable = false, isUpdateButtonEnable = false)
                 }
                 is ResidentEvent.SortFullName -> {
                     loadResidents(columnOrder = event.orderTypes)
@@ -246,15 +246,12 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 dateOfBirth = TextFieldValue(text = resident.dateOfBirth),
                 seniorCitizen = resident.seniorCitizen,
                 educationalAttainment = TextFieldValue(text = resident.educationalAttainment),
-                isUpdateButtonEnable = true,
-                isSaveButtonEnable = false,
                 imageName = resident.imageName,
                 isLoading = false,
             )
     }
 
     private fun loadResidents(columnOrder: OrderTypes) {
-        _inputState.value = inputState.value.copy(orderTypes = columnOrder)
         job = CoroutineScope(Dispatchers.Main).launch {
             residentsUseCase.getResidentsUseCase(columnOrder).collect { residents ->
                 _tableState.value = tableState.value.copy(residents = residents, columnOrder = columnOrder)

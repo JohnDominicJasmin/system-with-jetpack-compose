@@ -95,7 +95,6 @@ fun ResidentScreen() {
                 modifier = Modifier
                     .fillMaxWidth(0.99f)
                     .padding(top = 25.dp),
-                residentTableState = viewModel.tableState.value,
                 residentViewModel = viewModel)
 
 

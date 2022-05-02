@@ -28,7 +28,6 @@ import resident_feature.domain.model.Resident
 import resident_feature.domain.util.OrderType
 import resident_feature.domain.util.OrderTypes
 import resident_feature.presentation.ResidentEvent
-import resident_feature.presentation.ResidentTableState
 import resident_feature.presentation.ResidentViewModel
 import resident_feature.presentation.theme.Black800
 import resident_feature.presentation.theme.Blue400
@@ -38,7 +37,10 @@ import resident_feature.util.DrawableResource
 
 
 @Composable
-fun TableItemsArea(modifier: Modifier, residentTableState: ResidentTableState, residentViewModel: ResidentViewModel) {
+fun TableItemsArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
+
+    val inputState = residentViewModel.inputState.value
+    val residentTableState = residentViewModel.tableState.value
 
     val backgroundColorState = remember { mutableStateOf(Blue400) }
 
@@ -57,7 +59,9 @@ fun TableItemsArea(modifier: Modifier, residentTableState: ResidentTableState, r
             }
 
             LazyColumn {
-                itemsIndexed(residentTableState.residents) { index, item ->
+                itemsIndexed(residentTableState.residents.filter {
+                    it.fullName.contains(inputState.searchQuery.text, ignoreCase = true)
+                }) { index, item ->
                     backgroundColorState.value = if (index % 2 == 0) {
                         Blue400
                     } else {
