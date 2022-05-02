@@ -16,6 +16,7 @@ import resident_feature.domain.exceptions.ResidentsAuthentication
 import resident_feature.domain.model.Resident
 import resident_feature.domain.use_case.ResidentUseCase
 import resident_feature.domain.util.OrderType
+import resident_feature.domain.util.OrderTypes
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,7 +35,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
 
 
     init {
-        loadResidents(columnOrder = OrderType.FullNameColumnOrder.Ascending)
+        loadResidents(columnOrder = OrderTypes.FullNameColumnOrder(orderType = OrderType.Descending))
     }
 
     fun onEvent(event: ResidentEvent) {
@@ -48,7 +49,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                     _inputState.value = this.copy(searchQuery = event.searchQuery)
                 }
                 is ResidentEvent.SearchResident -> {
-                    _inputState.value = this.copy(searchQuery = event.searchQuery)
+                    _inputState.value = this.copy(searchQuery = searchQuery)
                 }
                 is ResidentEvent.EnteredFullName -> {
                     _inputState.value = this.copy(fullName = event.fullName, fullNameErrorMessage = "")
@@ -171,7 +172,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
 
                 is ResidentEvent.EditResident -> {
                     loadResident(resident = event.resident)
-                    _inputState.value = this.copy(isSaveButtonEnable = true, isUpdateButtonEnable = false)
+                    //todo _inputState.value = this.copy(isSaveButtonEnable = true, isUpdateButtonEnable = false)
                 }
 
                 is ResidentEvent.DeleteResident -> {
@@ -182,7 +183,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                             residentsUseCase.deleteResidentUseCase(event.residentId)
                         }.onSuccess {
                             _inputState.value = this@with.copy(isLoading = false)
-                            loadResidents(columnOrder = inputState.value.orderType)
+                            loadResidents(columnOrder = inputState.value.orderTypes)
                             _eventFlow.emit(
                                 value =
                                 ResidentEventResult.ShowAlertDialog(
@@ -206,22 +207,22 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 }
                 is ResidentEvent.SelectResidentRow -> {
                     loadResident(resident = event.resident)
-                    _inputState.value = this.copy(isSaveButtonEnable = false, isUpdateButtonEnable = false)
+                    //todo _inputState.value = this.copy(isSaveButtonEnable = false, isUpdateButtonEnable = false)
                 }
                 is ResidentEvent.SortFullName -> {
-                    loadResidents(columnOrder = event.orderType)
+                    loadResidents(columnOrder = event.orderTypes)
                 }
                 is ResidentEvent.ToggleSex -> {
-                    loadResidents(columnOrder = event.orderType)
+                    loadResidents(columnOrder = event.orderTypes)
                 }
                 is ResidentEvent.SortAge -> {
-                    loadResidents(columnOrder = event.orderType)
+                    loadResidents(columnOrder = event.orderTypes)
                 }
                 is ResidentEvent.SortPurok -> {
-                    loadResidents(columnOrder = event.orderType)
+                    loadResidents(columnOrder = event.orderTypes)
                 }
                 is ResidentEvent.ToggleVoter -> {
-                    loadResidents(columnOrder = event.orderType)
+                    loadResidents(columnOrder = event.orderTypes)
                 }
 
             }
@@ -229,33 +230,31 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
     }
 
     private fun loadResident(resident: Resident) {
-        with(resident) {
             _inputState.value = inputState.value.copy(
                 id = resident.id,
                 fullName = TextFieldValue(text = resident.fullName),
-                suffix = suffix,
-                sex = sex,
+                suffix = resident.suffix,
+                sex = resident.sex,
                 address = TextFieldValue(text = resident.address),
                 religion = TextFieldValue(text = resident.religion),
-                civilStatus = civilStatus,
+                civilStatus = resident.civilStatus,
                 contactNumber = TextFieldValue(text = resident.contactNumber),
                 purok = TextFieldValue(text = resident.purok),
                 occupation = TextFieldValue(text = resident.occupation),
-                voter = voter,
+                voter = resident.voter,
                 citizenship = TextFieldValue(text = resident.citizenship),
                 dateOfBirth = TextFieldValue(text = resident.dateOfBirth),
-                seniorCitizen = seniorCitizen,
+                seniorCitizen = resident.seniorCitizen,
                 educationalAttainment = TextFieldValue(text = resident.educationalAttainment),
                 isUpdateButtonEnable = true,
                 isSaveButtonEnable = false,
                 imageName = resident.imageName,
                 isLoading = false,
             )
-        }
     }
 
-    private fun loadResidents(columnOrder: OrderType) {
-        _inputState.value = inputState.value.copy(orderType = columnOrder)
+    private fun loadResidents(columnOrder: OrderTypes) {
+        _inputState.value = inputState.value.copy(orderTypes = columnOrder)
         job = CoroutineScope(Dispatchers.Main).launch {
             residentsUseCase.getResidentsUseCase(columnOrder).collect { residents ->
                 _tableState.value = tableState.value.copy(residents = residents, columnOrder = columnOrder)
@@ -271,7 +270,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 onManipulate()
             }.onSuccess {
                 _inputState.value = this@with.copy(isLoading = false)
-                loadResidents(columnOrder = inputState.value.orderType)
+                loadResidents(columnOrder = inputState.value.orderTypes)
                 _inputState.value = ResidentInputState()
                 _eventFlow.emit(
                     value = ResidentEventResult.ShowAlertDialog(

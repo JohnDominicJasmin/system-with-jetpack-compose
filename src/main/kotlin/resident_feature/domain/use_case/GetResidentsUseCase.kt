@@ -6,28 +6,60 @@ import resident_feature.data.repository.ResidentRepositoryImpl
 import resident_feature.domain.model.Resident
 import resident_feature.domain.repository.ResidentRepository
 import resident_feature.domain.util.OrderType
+import resident_feature.domain.util.OrderTypes
 
 class GetResidentsUseCase(private val residentRepository: ResidentRepository = ResidentRepositoryImpl()) {
-    operator fun invoke(input: OrderType): Flow<List<Resident>> {
+    operator fun invoke(input: OrderTypes): Flow<List<Resident>> {
 
-        return residentRepository.getResidents().map { place ->
+        return residentRepository.getResidents().map { resident ->
 
-            when(input){
-                is OrderType.FullNameColumnOrder.Ascending -> place.sortedBy { it.fullName }
-                is OrderType.FullNameColumnOrder.Descending -> place.sortedByDescending { it.fullName }
+            when (input) {
+                is OrderTypes.FullNameColumnOrder -> {
+                    if (input.orderType == OrderType.Ascending) {
+                        resident.sortedBy { it.fullName }
+                    } else {
+                        resident.sortedByDescending { it.fullName }
+                    }
 
-                is OrderType.AgeColumnOrder.Ascending -> place.sortedBy { it.age }
-                is OrderType.AgeColumnOrder.Descending -> place.sortedByDescending { it.age }
+                }
 
-                is OrderType.PurokColumnOrder.Ascending -> place.sortedBy { it.purok }
-                is OrderType.PurokColumnOrder.Descending -> place.sortedByDescending { it.purok }
 
-                is OrderType.SexColumnOrder.Ascending -> place.sortedBy { it.sex }
-                is OrderType.SexColumnOrder.Descending -> place.sortedByDescending { it.sex }
+                is OrderTypes.AgeColumnOrder -> {
+                    if (input.orderType == OrderType.Ascending) {
+                        resident.sortedBy { it.age }
+                    } else {
+                        resident.sortedByDescending { it.age }
+                    }
+                }
 
-                is OrderType.VoterColumnOrder.Ascending -> place.sortedBy { it.voter }
-                is OrderType.VoterColumnOrder.Descending -> place.sortedByDescending { it.voter }
+
+                is OrderTypes.SexColumnOrder -> {
+                    if (input.orderType == OrderType.Ascending) {
+                        resident.sortedBy { it.sex }
+                    } else {
+                        resident.sortedByDescending { it.sex }
+                    }
+                }
+
+                is OrderTypes.PurokColumnOrder -> {
+                    if (input.orderType == OrderType.Ascending) {
+                        resident.sortedBy { it.purok }
+                    } else {
+                        resident.sortedByDescending { it.purok }
+                    }
+                }
+
+                is OrderTypes.VoterColumnOrder -> {
+                    if (input.orderType == OrderType.Ascending) {
+                        resident.sortedBy { it.voter }
+                    } else {
+                        resident.sortedByDescending { it.voter }
+                    }
+                }
+
+
             }
+
         }
     }
 }
