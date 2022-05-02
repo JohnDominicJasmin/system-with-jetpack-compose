@@ -22,6 +22,8 @@ fun SelectProfilePictureArea(
     modifier: Modifier,
     errorMessage: String,
     imageResource: String,
+    isUpdateButtonEnabled: Boolean,
+    isSaveButtonEnabled: Boolean,
     browseButtonOnClick: () -> Unit,
     saveButtonOnClick: () -> Unit,
     updateButtonOnClick: () -> Unit
@@ -53,7 +55,7 @@ fun SelectProfilePictureArea(
         ButtonItem(
             modifier = Modifier.fillMaxWidth(0.9f),
             buttonOnClick = browseButtonOnClick,
-            buttonText = "Browse", isEnabled = true
+            buttonText = "Browse",
         )
 
         Row(
@@ -65,13 +67,13 @@ fun SelectProfilePictureArea(
                 modifier = Modifier.weight(0.5f, fill = true),
                 buttonOnClick = updateButtonOnClick,
                 buttonText = "Update",
-                isEnabled = false
+                isEnabled = isUpdateButtonEnabled
             )
             ButtonItem(
                 modifier = Modifier.weight(0.5f, fill = true),
                 buttonOnClick = saveButtonOnClick,
                 buttonText = "Save",
-                isEnabled = true
+                isEnabled = isSaveButtonEnabled
             )
         }
 
@@ -81,7 +83,7 @@ fun SelectProfilePictureArea(
 }
 
 @Composable
-private fun ButtonItem(isEnabled: Boolean, modifier: Modifier, buttonOnClick: () -> Unit, buttonText: String) {
+private fun ButtonItem(isEnabled: Boolean = true, modifier: Modifier, buttonOnClick: () -> Unit, buttonText: String) {
     Button(
         onClick = buttonOnClick,
         enabled = isEnabled,

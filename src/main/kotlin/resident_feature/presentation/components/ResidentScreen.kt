@@ -58,7 +58,7 @@ fun ResidentScreen() {
                    viewModel.onEvent(event = ResidentEvent.EnteredSearchValue(searchQuery = it))
                 },
                     searchButtonOnClick = {
-
+                        viewModel.onEvent(event = ResidentEvent.SearchResident)
                     })
 
             }
@@ -80,9 +80,9 @@ fun ResidentScreen() {
                         .weight(0.17f),
                     errorMessage = inputState.profileImageErrorMessage,
                     imageResource =  imageResource,
-                    browseButtonOnClick = {
-                        viewModel.onEvent(event = ResidentEvent.BrowseImage)
-                    },
+                    isUpdateButtonEnabled = inputState.isUpdateButtonEnable,
+                    isSaveButtonEnabled = inputState.isSaveButtonEnable,
+                    browseButtonOnClick = { viewModel.onEvent(event = ResidentEvent.BrowseImage) },
                     saveButtonOnClick = { viewModel.onEvent(event = ResidentEvent.SaveResident)},
                     updateButtonOnClick = { viewModel.onEvent(event = ResidentEvent.UpdateResident)})
             }
@@ -95,7 +95,8 @@ fun ResidentScreen() {
                 modifier = Modifier
                     .fillMaxWidth(0.99f)
                     .padding(top = 25.dp),
-                residentTableState = viewModel.tableState.value)
+                residentTableState = viewModel.tableState.value,
+                residentViewModel = viewModel)
 
 
         }

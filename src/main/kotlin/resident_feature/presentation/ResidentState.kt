@@ -2,10 +2,11 @@ package resident_feature.presentation
 
 import androidx.compose.ui.text.input.TextFieldValue
 import resident_feature.domain.util.OrderType
+import resident_feature.domain.util.OrderTypes
 import resident_feature.util.DrawableResource
 
 data class ResidentInputState(
-    var searchQuery: TextFieldValue = TextFieldValue(""),
+    var searchQuery: TextFieldValue = TextFieldValue(""), //todo : use this
     var id : Int = -1,
 
     var fullName: TextFieldValue = TextFieldValue(""),
@@ -54,12 +55,12 @@ data class ResidentInputState(
     var seniorCitizen : String = "",
     var seniorCitizenErrorMessage: String = "",
 
-    var orderType : OrderType = OrderType.FullNameColumnOrder.Ascending,
+    var orderTypes : OrderTypes = OrderTypes.FullNameColumnOrder(orderType = OrderType.Descending),
 
 
 
-    var isUpdateButtonEnable : Boolean = false,
-    var isSaveButtonEnable : Boolean = true,
+    var isUpdateButtonEnable : Boolean = false,//todo : use this
+    var isSaveButtonEnable : Boolean = true,//todo : use this
 
     var imageName :String = DrawableResource.ProfilePlaceHolder.resource,
     var profileImageErrorMessage: String = "",

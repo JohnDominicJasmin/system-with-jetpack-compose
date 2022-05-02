@@ -25,7 +25,11 @@ import resident_feature.common.Constants.PUROK_ROW_WEIGHT
 import resident_feature.common.Constants.SEX_ROW_WEIGHT
 import resident_feature.common.Constants.VOTER_ROW_WEIGHT
 import resident_feature.domain.model.Resident
+import resident_feature.domain.util.OrderType
+import resident_feature.domain.util.OrderTypes
+import resident_feature.presentation.ResidentEvent
 import resident_feature.presentation.ResidentTableState
+import resident_feature.presentation.ResidentViewModel
 import resident_feature.presentation.theme.Black800
 import resident_feature.presentation.theme.Blue400
 import resident_feature.presentation.theme.Gray200
@@ -34,14 +38,19 @@ import resident_feature.util.DrawableResource
 
 
 @Composable
-fun TableItemsArea(modifier: Modifier, residentTableState: ResidentTableState) {
+fun TableItemsArea(modifier: Modifier, residentTableState: ResidentTableState, residentViewModel: ResidentViewModel) {
 
     val backgroundColorState = remember { mutableStateOf(Blue400) }
 
-    Card(modifier = modifier, border = BorderStroke(width = 1.dp, color = Color.Gray), backgroundColor = Color.Unspecified, elevation = 0.dp, ) {
-        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,) {
+    Card(
+        modifier = modifier,
+        border = BorderStroke(width = 1.dp, color = Color.Gray),
+        backgroundColor = Color.Unspecified,
+        elevation = 0.dp,
+    ) {
+        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
 
-            TitleArea()
+            TitleArea(residentViewModel = residentViewModel)
 
             if (residentTableState.residents.isEmpty()) {
                 NoDataDisplayText()
@@ -59,7 +68,16 @@ fun TableItemsArea(modifier: Modifier, residentTableState: ResidentTableState) {
                             .fillMaxWidth()
                             .padding(top = 5.dp, bottom = 5.dp),
                         resident = item,
-                        backgroundColor = backgroundColorState.value
+                        backgroundColor = backgroundColorState.value,
+                        onClickRowItem = {
+                            residentViewModel.onEvent(event = ResidentEvent.SelectResidentRow(item))
+                        },
+                        onEditIconClick = {
+                            residentViewModel.onEvent(event = ResidentEvent.EditResident(item))
+                        },
+                        onDeleteIconClick = {
+                            residentViewModel.onEvent(event = ResidentEvent.DeleteResident(item.id))
+                        }
                     )
                 }
             }
@@ -69,24 +87,33 @@ fun TableItemsArea(modifier: Modifier, residentTableState: ResidentTableState) {
 
 
 @Composable
-private fun NoDataDisplayText(){
+private fun NoDataDisplayText() {
     Column(
         modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
         Text(
             text = "No data to display",
             color = Gray200,
 
-        )
+            )
     }
 }
 
 @Composable
-private fun TableItem(modifier: Modifier, resident: Resident, backgroundColor: Color) {
-    Row(modifier = Modifier.background(backgroundColor)) {
+private fun TableItem(
+    modifier: Modifier,
+    resident: Resident,
+    backgroundColor: Color,
+    onClickRowItem: () -> Unit,
+    onEditIconClick: () -> Unit,
+    onDeleteIconClick: () -> Unit,
+) {
+
+    Row(modifier = Modifier.background(backgroundColor).clickable { onClickRowItem() }) {
         Row(
             modifier = modifier.horizontalScroll(state = rememberScrollState()),
             verticalAlignment = Alignment.CenterVertically
@@ -97,7 +124,7 @@ private fun TableItem(modifier: Modifier, resident: Resident, backgroundColor: C
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(FULL_NAME_ROW_WEIGHT),
 
-            )
+                )
 
 
             Text(
@@ -153,13 +180,13 @@ private fun TableItem(modifier: Modifier, resident: Resident, backgroundColor: C
                     painter = painterResource(DrawableResource.EditIcon.resource),
                     contentDescription = "Edit Icon",
                     tint = Color.White,
-                    modifier = Modifier.clickable {  }
-                    )
+                    modifier = Modifier.clickable { onEditIconClick() }
+                )
                 Icon(
                     painter = painterResource(DrawableResource.DeleteIcon.resource),
                     contentDescription = "Delete Icon",
                     tint = Color.White,
-                    modifier = Modifier.clickable {  }
+                    modifier = Modifier.clickable { onDeleteIconClick() }
                 )
 
             }
@@ -169,7 +196,10 @@ private fun TableItem(modifier: Modifier, resident: Resident, backgroundColor: C
 }
 
 @Composable
-private fun TitleArea() {
+private fun TitleArea(residentViewModel: ResidentViewModel) {
+
+    val state = residentViewModel.tableState.value
+
     Row(
         modifier = Modifier.wrapContentSize(),
         verticalAlignment = Alignment.CenterVertically,
@@ -181,7 +211,25 @@ private fun TitleArea() {
             title = "First name",
             iconResource = DrawableResource.SortIcon.resource,
             onClick = {
-
+                state.columnOrder?.let { currentOrder ->
+                    if (currentOrder == OrderTypes.FullNameColumnOrder(orderType = OrderType.Ascending)) {
+                        residentViewModel.onEvent(
+                            event = ResidentEvent.SortFullName(
+                                orderTypes = OrderTypes.FullNameColumnOrder(
+                                    orderType = OrderType.Descending
+                                )
+                            )
+                        )
+                    } else {
+                        residentViewModel.onEvent(
+                            event = ResidentEvent.SortFullName(
+                                orderTypes = OrderTypes.FullNameColumnOrder(
+                                    orderType = OrderType.Ascending
+                                )
+                            )
+                        )
+                    }
+                }
             })
 
         TitleItem(
@@ -189,6 +237,25 @@ private fun TitleArea() {
             title = "Sex",
             iconResource = DrawableResource.ToggleSortIcon.resource,
             onClick = {
+                state.columnOrder?.let { currentOrder ->
+                    if (currentOrder == OrderTypes.SexColumnOrder(orderType = OrderType.Ascending)) {
+                        residentViewModel.onEvent(
+                            event = ResidentEvent.ToggleSex(
+                                orderTypes = OrderTypes.SexColumnOrder(
+                                    orderType = OrderType.Descending
+                                )
+                            )
+                        )
+                    } else {
+                        residentViewModel.onEvent(
+                            event = ResidentEvent.ToggleSex(
+                                orderTypes = OrderTypes.SexColumnOrder(
+                                    orderType = OrderType.Ascending
+                                )
+                            )
+                        )
+                    }
+                }
 
             })
 
@@ -197,7 +264,26 @@ private fun TitleArea() {
             title = "Age",
             iconResource = DrawableResource.ToggleSortIcon.resource,
             onClick = {
+                state.columnOrder?.let { currentOrder ->
+                    if (currentOrder == OrderTypes.AgeColumnOrder(orderType = OrderType.Ascending)) {
+                        residentViewModel.onEvent(
+                            event = ResidentEvent.SortAge(
+                                orderTypes = OrderTypes.AgeColumnOrder(
+                                    orderType = OrderType.Descending
+                                )
+                            )
+                        )
+                    } else {
+                        residentViewModel.onEvent(
+                            event = ResidentEvent.SortAge(
+                                orderTypes = OrderTypes.AgeColumnOrder(
+                                    orderType = OrderType.Ascending
+                                )
+                            )
+                        )
 
+                    }
+                }
             })
 
         TitleItem(
@@ -205,7 +291,13 @@ private fun TitleArea() {
             title = "Purok",
             iconResource = DrawableResource.SortIcon.resource,
             onClick = {
-
+                state.columnOrder?.let{ currentOrder ->
+                    if(currentOrder == OrderTypes.PurokColumnOrder(orderType = OrderType.Ascending)){
+                        residentViewModel.onEvent(event = ResidentEvent.SortPurok(orderTypes = OrderTypes.PurokColumnOrder(orderType = OrderType.Descending)))
+                    }else{
+                        residentViewModel.onEvent(event = ResidentEvent.SortPurok(orderTypes = OrderTypes.PurokColumnOrder(orderType = OrderType.Ascending)))
+                    }
+                }
             })
 
         TitleItem(
@@ -220,7 +312,13 @@ private fun TitleArea() {
             title = "Voter",
             iconResource = DrawableResource.ToggleSortIcon.resource,
             onClick = {
-
+                state.columnOrder?.let { currentOrder ->
+                    if(currentOrder == OrderTypes.VoterColumnOrder(orderType = OrderType.Ascending)){
+                        residentViewModel.onEvent(event = ResidentEvent.ToggleVoter(orderTypes = OrderTypes.VoterColumnOrder(orderType = OrderType.Descending)))
+                    }else{
+                        residentViewModel.onEvent(event = ResidentEvent.ToggleVoter(orderTypes = OrderTypes.VoterColumnOrder(orderType = OrderType.Ascending)))
+                    }
+                }
             })
 
         TitleItem(
