@@ -1,7 +1,4 @@
 
-import kotlinx.coroutines.runBlocking
-import resident_feature.domain.model.Resident
-import resident_feature.domain.util.validateInput
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.test.Test
@@ -10,33 +7,7 @@ import kotlin.test.Test
 class Test {
     @Test
     fun test() {
-        runBlocking {
-            validateInput(
-                resident = Resident(
-                    fullName = "Jose",
-                    sex = "male",
-                    suffix = "Jr",
-                    address = "Manila",
-                    religion = "Muslim",
-                    dateOfBirth = "24/09/2001",
-                    contactNumber = "09194341361",
-                    purok = "Purok Wan",
-                    civilStatus = "Single",
-                    occupation = "Ninja",
-                    voter = "Yes",
-                    citizenship = "Peenoise",
-                    seniorCitizen = "Yes",
-                    educationalAttainment = "College",
-                    imageName = "George",
-                    localImagePath = "sample_path_to_heaven",
-                    age = getAge(dobString = "24/09/2001").toString()
-                )
-            ) {
-                print("Success\n\n")
-                print("Age is ${getAge(dobString = "24/09/2001")}")
-            }
-        }
-
+        print(getAge("2/3/2022") < 0)
     }
 
     private fun getAge(dobString: String): Int {
