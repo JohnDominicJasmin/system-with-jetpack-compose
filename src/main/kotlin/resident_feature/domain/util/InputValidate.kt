@@ -163,7 +163,7 @@ suspend fun validateInput(resident: Resident, action: suspend () -> Unit){
         }
 
 
-        resident.imageName == DrawableResource.ProfilePlaceHolder.resource -> {
+        resident.imageName == DrawableResource.ProfilePlaceHolder.resource || resident.imageName == DrawableResource.NoImageFound.resource -> {
             throw ResidentsAuthentication.ProfileImageException("Profile Image cannot be left blank.")
         }
 

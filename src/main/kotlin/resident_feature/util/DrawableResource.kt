@@ -12,4 +12,5 @@ sealed class DrawableResource(val resource: String){
  object FailedIcon: DrawableResource(resource = "system_resources/ic_error.svg")
  object WarningIcon: DrawableResource(resource = "system_resources/ic_warning.svg")
  object QuestionIcon: DrawableResource(resource = "system_resources/ic_question.svg")
+ object NoImageFound: DrawableResource(resource = "system_resources/ic_no_image_found.jpg")
 }

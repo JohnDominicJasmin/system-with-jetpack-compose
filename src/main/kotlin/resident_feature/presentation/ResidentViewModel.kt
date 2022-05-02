@@ -12,11 +12,14 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import resident_feature.common.Constants.SELECTED_IMAGE_PATH_DESTINATION
 import resident_feature.domain.exceptions.ResidentsAuthentication
 import resident_feature.domain.model.Resident
 import resident_feature.domain.use_case.ResidentUseCase
 import resident_feature.domain.util.OrderType
 import resident_feature.domain.util.OrderTypes
+import resident_feature.util.DrawableResource
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -230,25 +233,32 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
     }
 
     private fun loadResident(resident: Resident) {
-            _inputState.value = inputState.value.copy(
-                id = resident.id,
-                fullName = TextFieldValue(text = resident.fullName),
-                suffix = resident.suffix,
-                sex = resident.sex,
-                address = TextFieldValue(text = resident.address),
-                religion = TextFieldValue(text = resident.religion),
-                civilStatus = resident.civilStatus,
-                contactNumber = TextFieldValue(text = resident.contactNumber),
-                purok = TextFieldValue(text = resident.purok),
-                occupation = TextFieldValue(text = resident.occupation),
-                voter = resident.voter,
-                citizenship = TextFieldValue(text = resident.citizenship),
-                dateOfBirth = TextFieldValue(text = resident.dateOfBirth),
-                seniorCitizen = resident.seniorCitizen,
-                educationalAttainment = TextFieldValue(text = resident.educationalAttainment),
-                imageName = resident.imageName,
-                isLoading = false,
-            )
+        val imageDestination = File(SELECTED_IMAGE_PATH_DESTINATION + resident.imageName)
+        val profileImage = if(!imageDestination.exists()){
+            DrawableResource.NoImageFound.resource
+        }else{
+            "/local_images/${resident.imageName}"
+        }
+
+         _inputState.value = inputState.value.copy(
+             id = resident.id,
+             fullName = TextFieldValue(text = resident.fullName),
+             suffix = resident.suffix,
+             sex = resident.sex,
+             address = TextFieldValue(text = resident.address),
+             religion = TextFieldValue(text = resident.religion),
+             civilStatus = resident.civilStatus,
+             contactNumber = TextFieldValue(text = resident.contactNumber),
+             purok = TextFieldValue(text = resident.purok),
+             occupation = TextFieldValue(text = resident.occupation),
+             voter = resident.voter,
+             citizenship = TextFieldValue(text = resident.citizenship),
+             dateOfBirth = TextFieldValue(text = resident.dateOfBirth),
+             seniorCitizen = resident.seniorCitizen,
+             educationalAttainment = TextFieldValue(text = resident.educationalAttainment),
+             imageName = profileImage,
+             isLoading = false,
+         )
     }
 
     private fun loadResidents(columnOrder: OrderTypes) {
