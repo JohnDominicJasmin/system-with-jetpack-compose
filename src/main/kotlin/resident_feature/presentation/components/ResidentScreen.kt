@@ -4,17 +4,18 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import resident_feature.presentation.ResidentDialogState
 import resident_feature.presentation.ResidentEvent
+import resident_feature.presentation.ResidentEventResult
 import resident_feature.presentation.ResidentViewModel
-import resident_feature.presentation.theme.Black800
-import resident_feature.presentation.theme.Blue700
+import resident_feature.presentation.theme.*
+import resident_feature.util.DrawableResource
 
 @Composable
 @Preview
@@ -22,7 +23,53 @@ fun ResidentScreen() {
     val viewModel = remember { ResidentViewModel()}
     val scope = rememberCoroutineScope()
     val inputState = viewModel.inputState.value
+    val alertDialogState = remember{mutableStateOf(ResidentDialogState())}
 
+
+    LaunchedEffect(key1 = true){
+        viewModel.eventFlow.collectLatest { residentEvent ->
+            when(residentEvent){
+                is ResidentEventResult.SuccessDialog -> {
+                    alertDialogState.value = ResidentDialogState(
+                        title = residentEvent.title,
+                        description = residentEvent.description,
+                        imageResource = DrawableResource.SuccessIcon.resource,
+                        color = Green1000
+                    )
+
+                }
+                is ResidentEventResult.ErrorDialog -> {
+                    alertDialogState.value = ResidentDialogState(
+                        title = residentEvent.title,
+                        description = residentEvent.description,
+                        imageResource = DrawableResource.ErrorIcon.resource,
+                        color = Red300
+                    )
+                }
+                is ResidentEventResult.WarningDialog -> {
+                    alertDialogState.value = ResidentDialogState(
+                        title = residentEvent.title,
+                        description = residentEvent.description,
+                        imageResource = DrawableResource.WarningIcon.resource,
+                        color = Yellow700
+                    )
+                }
+            }
+
+        }
+    }
+
+
+    with(alertDialogState.value){
+        if(title.isNotEmpty()){
+            SimpleAlertDialog(
+                title = title,
+                description = description,
+                color = color!!,
+                imageResource = imageResource
+            )
+        }
+    }
 
     BoxWithConstraints(
         modifier = Modifier

@@ -41,14 +41,13 @@ fun TableItemsArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
 
     val inputState = residentViewModel.inputState.value
     val residentTableState = residentViewModel.tableState.value
-
     val backgroundColorState = remember { mutableStateOf(Blue400) }
 
     Card(
         modifier = modifier,
         border = BorderStroke(width = 1.dp, color = Color.Gray),
         backgroundColor = Color.Unspecified,
-        elevation = 0.dp,
+        elevation = 0.dp
     ) {
         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -73,18 +72,14 @@ fun TableItemsArea(modifier: Modifier, residentViewModel: ResidentViewModel) {
                             .padding(top = 5.dp, bottom = 5.dp),
                         resident = item,
                         backgroundColor = backgroundColorState.value,
-                        onClickRowItem = {
-                            residentViewModel.onEvent(event = ResidentEvent.SelectResidentRow(item))
-                        },
-                        onEditIconClick = {
-                            residentViewModel.onEvent(event = ResidentEvent.EditResident(item))
-                        },
-                        onDeleteIconClick = {
-                            residentViewModel.onEvent(event = ResidentEvent.DeleteResident(item.id))
-                        }
+                        residentViewModel = residentViewModel
                     )
+
+
                 }
             }
+
+
         }
     }
 }
@@ -112,12 +107,14 @@ private fun TableItem(
     modifier: Modifier,
     resident: Resident,
     backgroundColor: Color,
-    onClickRowItem: () -> Unit,
-    onEditIconClick: () -> Unit,
-    onDeleteIconClick: () -> Unit,
+    residentViewModel: ResidentViewModel
 ) {
 
-    Row(modifier = Modifier.background(backgroundColor).clickable { onClickRowItem() }) {
+    val confirmationDialogState = remember { mutableStateOf(false) }
+
+    Row(modifier = Modifier.background(backgroundColor).clickable {
+        residentViewModel.onEvent(event = ResidentEvent.SelectResidentRow(resident))
+    }) {
         Row(
             modifier = modifier.horizontalScroll(state = rememberScrollState()),
             verticalAlignment = Alignment.CenterVertically
@@ -184,19 +181,41 @@ private fun TableItem(
                     painter = painterResource(DrawableResource.EditIcon.resource),
                     contentDescription = "Edit Icon",
                     tint = Color.White,
-                    modifier = Modifier.clickable { onEditIconClick() }
+                    modifier = Modifier.clickable {
+                        residentViewModel.onEvent(event = ResidentEvent.EditResident(resident))
+                    }
                 )
                 Icon(
                     painter = painterResource(DrawableResource.DeleteIcon.resource),
                     contentDescription = "Delete Icon",
                     tint = Color.White,
-                    modifier = Modifier.clickable { onDeleteIconClick() }
+                    modifier = Modifier.clickable {
+//                        residentViewModel.onEvent(event = ResidentEvent.DeleteResident(resident.id))
+                        confirmationDialogState.value = true
+                    }
                 )
+
+                if (confirmationDialogState.value) {
+                    ConfirmationDialog(
+                        title = "Are you sure?",
+                        description = "Do you really want to delete these records? This process cannot be undone.",
+                        onConfirm = {
+                            residentViewModel.onEvent(event = ResidentEvent.DeleteResident(resident.id))
+                            confirmationDialogState.value = false
+                        },
+                        onCancel = {
+                            confirmationDialogState.value = false
+                        }
+                    )
+                }
+
 
             }
 
         }
     }
+
+
 }
 
 @Composable
@@ -210,10 +229,12 @@ private fun TitleArea(residentViewModel: ResidentViewModel) {
         horizontalArrangement = Arrangement.Center
     ) {
 
+
+        val firstNameSortIcon = remember { mutableStateOf(DrawableResource.SortIconAscending.resource) }
         TitleItem(
             modifier = Modifier.weight(FULL_NAME_ROW_WEIGHT),
             title = "First name",
-            iconResource = DrawableResource.SortIcon.resource,
+            iconResource = firstNameSortIcon.value,
             onClick = {
                 state.columnOrder?.let { currentOrder ->
                     if (currentOrder == OrderTypes.FullNameColumnOrder(orderType = OrderType.Ascending)) {
@@ -224,6 +245,9 @@ private fun TitleArea(residentViewModel: ResidentViewModel) {
                                 )
                             )
                         )
+                        firstNameSortIcon.value = DrawableResource.SortIconAscending.resource
+
+
                     } else {
                         residentViewModel.onEvent(
                             event = ResidentEvent.SortFullName(
@@ -232,17 +256,23 @@ private fun TitleArea(residentViewModel: ResidentViewModel) {
                                 )
                             )
                         )
+                        firstNameSortIcon.value = DrawableResource.SortIconDescending.resource
+
+
                     }
                 }
             })
 
+
+        val sexToggleIcon = remember { mutableStateOf(DrawableResource.NotToggledIcon.resource) }
         TitleItem(
             modifier = Modifier.weight(SEX_ROW_WEIGHT),
             title = "Sex",
-            iconResource = DrawableResource.ToggleSortIcon.resource,
+            iconResource = sexToggleIcon.value,
             onClick = {
                 state.columnOrder?.let { currentOrder ->
                     if (currentOrder == OrderTypes.SexColumnOrder(orderType = OrderType.Ascending)) {
+                        sexToggleIcon.value = DrawableResource.NotToggledIcon.resource
                         residentViewModel.onEvent(
                             event = ResidentEvent.ToggleSex(
                                 orderTypes = OrderTypes.SexColumnOrder(
@@ -251,6 +281,7 @@ private fun TitleArea(residentViewModel: ResidentViewModel) {
                             )
                         )
                     } else {
+                        sexToggleIcon.value = DrawableResource.ToggledIcon.resource
                         residentViewModel.onEvent(
                             event = ResidentEvent.ToggleSex(
                                 orderTypes = OrderTypes.SexColumnOrder(
@@ -263,13 +294,15 @@ private fun TitleArea(residentViewModel: ResidentViewModel) {
 
             })
 
+        val ageToggleIcon = remember { mutableStateOf(DrawableResource.NotToggledIcon.resource) }
         TitleItem(
             modifier = Modifier.weight(AGE_ROW_WEIGHT),
             title = "Age",
-            iconResource = DrawableResource.ToggleSortIcon.resource,
+            iconResource = ageToggleIcon.value,
             onClick = {
                 state.columnOrder?.let { currentOrder ->
                     if (currentOrder == OrderTypes.AgeColumnOrder(orderType = OrderType.Ascending)) {
+                        ageToggleIcon.value = DrawableResource.NotToggledIcon.resource
                         residentViewModel.onEvent(
                             event = ResidentEvent.SortAge(
                                 orderTypes = OrderTypes.AgeColumnOrder(
@@ -278,6 +311,7 @@ private fun TitleArea(residentViewModel: ResidentViewModel) {
                             )
                         )
                     } else {
+                        ageToggleIcon.value = DrawableResource.ToggledIcon.resource
                         residentViewModel.onEvent(
                             event = ResidentEvent.SortAge(
                                 orderTypes = OrderTypes.AgeColumnOrder(
@@ -290,16 +324,31 @@ private fun TitleArea(residentViewModel: ResidentViewModel) {
                 }
             })
 
+        val purokSortIcon = remember { mutableStateOf(DrawableResource.SortIconAscending.resource) }
         TitleItem(
             modifier = Modifier.weight(PUROK_ROW_WEIGHT),
             title = "Purok",
-            iconResource = DrawableResource.SortIcon.resource,
+            iconResource = purokSortIcon.value,
             onClick = {
-                state.columnOrder?.let{ currentOrder ->
-                    if(currentOrder == OrderTypes.PurokColumnOrder(orderType = OrderType.Ascending)){
-                        residentViewModel.onEvent(event = ResidentEvent.SortPurok(orderTypes = OrderTypes.PurokColumnOrder(orderType = OrderType.Descending)))
-                    }else{
-                        residentViewModel.onEvent(event = ResidentEvent.SortPurok(orderTypes = OrderTypes.PurokColumnOrder(orderType = OrderType.Ascending)))
+                state.columnOrder?.let { currentOrder ->
+                    if (currentOrder == OrderTypes.PurokColumnOrder(orderType = OrderType.Ascending)) {
+                        purokSortIcon.value = DrawableResource.SortIconAscending.resource
+                        residentViewModel.onEvent(
+                            event = ResidentEvent.SortPurok(
+                                orderTypes = OrderTypes.PurokColumnOrder(
+                                    orderType = OrderType.Descending
+                                )
+                            )
+                        )
+                    } else {
+                        purokSortIcon.value = DrawableResource.SortIconDescending.resource
+                        residentViewModel.onEvent(
+                            event = ResidentEvent.SortPurok(
+                                orderTypes = OrderTypes.PurokColumnOrder(
+                                    orderType = OrderType.Ascending
+                                )
+                            )
+                        )
                     }
                 }
             })
@@ -311,16 +360,32 @@ private fun TitleArea(residentViewModel: ResidentViewModel) {
 
             })
 
+
+        val voterToggleIcon = remember { mutableStateOf(DrawableResource.NotToggledIcon.resource) }
         TitleItem(
             modifier = Modifier.weight(VOTER_ROW_WEIGHT),
             title = "Voter",
-            iconResource = DrawableResource.ToggleSortIcon.resource,
+            iconResource = voterToggleIcon.value,
             onClick = {
                 state.columnOrder?.let { currentOrder ->
-                    if(currentOrder == OrderTypes.VoterColumnOrder(orderType = OrderType.Ascending)){
-                        residentViewModel.onEvent(event = ResidentEvent.ToggleVoter(orderTypes = OrderTypes.VoterColumnOrder(orderType = OrderType.Descending)))
-                    }else{
-                        residentViewModel.onEvent(event = ResidentEvent.ToggleVoter(orderTypes = OrderTypes.VoterColumnOrder(orderType = OrderType.Ascending)))
+                    if (currentOrder == OrderTypes.VoterColumnOrder(orderType = OrderType.Ascending)) {
+                        voterToggleIcon.value = DrawableResource.NotToggledIcon.resource
+                        residentViewModel.onEvent(
+                            event = ResidentEvent.ToggleVoter(
+                                orderTypes = OrderTypes.VoterColumnOrder(
+                                    orderType = OrderType.Descending
+                                )
+                            )
+                        )
+                    } else {
+                        voterToggleIcon.value = DrawableResource.ToggledIcon.resource
+                        residentViewModel.onEvent(
+                            event = ResidentEvent.ToggleVoter(
+                                orderTypes = OrderTypes.VoterColumnOrder(
+                                    orderType = OrderType.Ascending
+                                )
+                            )
+                        )
                     }
                 }
             })
@@ -374,7 +439,7 @@ private fun PreviewTitle() {
     TitleItem(
         modifier = Modifier.wrapContentSize(),
         title = "First name",
-        iconResource = DrawableResource.SortIcon.resource,
+        iconResource = DrawableResource.SortIconDescending.resource,
         onClick = {
 
         })

@@ -6,7 +6,7 @@ import resident_feature.domain.util.OrderTypes
 import resident_feature.util.DrawableResource
 
 data class ResidentInputState(
-    var searchQuery: TextFieldValue = TextFieldValue(""), //todo : use this
+    var searchQuery: TextFieldValue = TextFieldValue(""),
     var id : Int = -1,
 
     var fullName: TextFieldValue = TextFieldValue(""),

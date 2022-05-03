@@ -108,12 +108,9 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                                 _inputState.value = this@with.copy(imageName = selectedFile.name)
                             } else {
                                 _eventFlow.emit(
-                                    value = ResidentEventResult.ShowAlertDialog(
-                                        alertDialogType = AlertDialogType.ErrorDialog,
+                                    value = ResidentEventResult.ErrorDialog(
                                         title = "Error",
-                                        description = "Move the image to 'local_image' folder to continue.",
-                                    )
-                                )
+                                        description = "Move the image to 'local_image' folder to continue."))
                             }
                         }
                     }
@@ -181,7 +178,6 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 is ResidentEvent.DeleteResident -> {
                     CoroutineScope(Dispatchers.IO).launch {
                         kotlin.runCatching {
-                            //TODO: SHOW YES ON NO DIALOG, NO NEED TO SHOW THIS RESIDENT TO INPUTS
                             _inputState.value = this@with.copy(isLoading = true)
                             residentsUseCase.deleteResidentUseCase(event.residentId)
                         }.onSuccess {
@@ -189,22 +185,16 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                             loadResidents(columnOrder = inputState.value.orderTypes)
                             _eventFlow.emit(
                                 value =
-                                ResidentEventResult.ShowAlertDialog(
-                                    alertDialogType = AlertDialogType.SuccessDialog,
+                                ResidentEventResult.SuccessDialog(
                                     title = "Success",
-                                    description = "Resident Successfully Deleted",
-                                )
-                            )
+                                    description = "Resident Successfully Deleted"))
                         }.onFailure {
                             _inputState.value = this@with.copy(isLoading = false)
                             _eventFlow.emit(
                                 value =
-                                ResidentEventResult.ShowAlertDialog(
-                                    alertDialogType = AlertDialogType.ErrorDialog,
+                                ResidentEventResult.ErrorDialog(
                                     title = "Failed",
-                                    description = "Resident Failed to Deleted",
-                                )
-                            )
+                                    description = "Resident Failed to Deleted"))
                         }
                     }
                 }
@@ -280,23 +270,17 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 loadResidents(columnOrder = inputState.value.orderTypes)
                 _inputState.value = ResidentInputState()
                 _eventFlow.emit(
-                    value = ResidentEventResult.ShowAlertDialog(
-                        alertDialogType = AlertDialogType.SuccessDialog,
+                    value = ResidentEventResult.SuccessDialog(
                         title = "Success",
-                        description = successMessage,
-                    )
-                )
+                        description = successMessage))
             }.onFailure { exception ->
                 _inputState.value = this@with.copy(isLoading = false)
                 when (exception) {
                     is ResidentsAuthentication.ResidentsManipulationException -> {
                         _eventFlow.emit(
-                            ResidentEventResult.ShowAlertDialog(
-                                alertDialogType = AlertDialogType.ErrorDialog,
+                            ResidentEventResult.ErrorDialog(
                                 title = "Error",
-                                description = exception.message ?: "Unfortunately error occurred, please try again.",
-                            )
-                        )
+                                description = exception.message ?: "Unfortunately error occurred, please try again."))
                     }
                     is ResidentsAuthentication.FullNameException -> {
                         _inputState.value =

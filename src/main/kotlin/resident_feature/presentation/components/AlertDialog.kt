@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -18,11 +19,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.rememberDialogState
-import resident_feature.presentation.theme.*
+import resident_feature.presentation.theme.Black500
+import resident_feature.presentation.theme.Black800
+import resident_feature.presentation.theme.Black850
+import resident_feature.presentation.theme.Blue550
 import resident_feature.util.DrawableResource
 
 @Composable
-private fun SimpleDialog(
+fun SimpleAlertDialog(
     title: String,
     description: String,
     color: Color,
@@ -36,16 +40,16 @@ private fun SimpleDialog(
             onCloseRequest = {
                 dialogState.value = false
             },
-            state = rememberDialogState(width = 500.dp),
+            state = rememberDialogState(width = 500.dp, height = 327.dp),
             title = "",
-            undecorated = true,
+            undecorated = false,
             resizable = false,
-            transparent = true
+            transparent = false
         ) {
 
             Card(
                 modifier = Modifier.fillMaxSize(),
-                backgroundColor = Black800,
+                backgroundColor = Black850,
                 elevation = 4.dp,
                 shape = RoundedCornerShape(0.dp)
             ) {
@@ -68,7 +72,7 @@ private fun SimpleDialog(
 
                     }
                     Column(
-                        modifier = Modifier.background(color = Black800).weight(0.75f),
+                        modifier = Modifier.background(color = Black850).weight(0.75f),
                         verticalArrangement = Arrangement.spacedBy(18.dp, alignment = Alignment.Top),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -118,55 +122,29 @@ private fun SimpleDialog(
 
 
 @Composable
-fun SuccessDialog(title: String, description: String){
-    SimpleDialog(
-        title = title,
-        description = description,
-        imageResource = DrawableResource.SuccessIcon.resource,
-        color = Green1000,
-    )
+fun tea(){
+
 }
-
 @Composable
-fun FailedDialog(title: String, description: String){
-    SimpleDialog(
-        title = title,
-        description = description,
-        imageResource = DrawableResource.FailedIcon.resource,
-        color = Red300,
-    )
-}
+fun ConfirmationDialog(title: String,
+                       description: String,
+                       onConfirm: () -> Unit,
+                       onCancel: () -> Unit) {
 
-@Composable
-fun WarningDialog(title: String, description: String){
-    SimpleDialog(
-        title = title,
-        description = description,
-        imageResource = DrawableResource.WarningIcon.resource,
-        color = Yellow700,
-    )
-}
-
-@Composable
-fun DeleteDialog(title: String, description: String, onDeleteClick: () -> Unit) {
-    val dialogState = remember { mutableStateOf(true) }
-
-    if (dialogState.value) {
             Dialog(
-                onCloseRequest = {
-                    dialogState.value = false
-                },
-                state = rememberDialogState(width = 500.dp),
+                onCloseRequest = onCancel,
+                state = rememberDialogState(width = 500.dp, height = 340.dp),
                 title = "",
-                undecorated = true,
+                undecorated = false,
                 resizable = false,
-                transparent = true,) {
+                transparent = false,) {
 
                 Card(
-                    modifier = Modifier.fillMaxSize(),
-                    backgroundColor = Black800,
-                    elevation = 4.dp,
-                    shape = RoundedCornerShape(0.dp)
+                    modifier = Modifier.fillMaxSize().shadow(1.dp, RoundedCornerShape(0.dp)),
+                    backgroundColor = Black850,
+                    elevation = 1.dp,
+                    shape = RoundedCornerShape(0.dp),
+
                 ) {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.Top),
@@ -202,7 +180,7 @@ fun DeleteDialog(title: String, description: String, onDeleteClick: () -> Unit) 
 
                         Row(modifier = Modifier.padding(top = 7.dp), horizontalArrangement = Arrangement.spacedBy(15.dp)){
                             OutlinedButton(
-                                onClick = { dialogState.value = false},
+                                onClick = onCancel,
                                 modifier = Modifier.width(140.dp),
                                 shape = RoundedCornerShape(12.dp),
                                 border = BorderStroke(width = 2.dp, color = Color.White),
@@ -221,7 +199,7 @@ fun DeleteDialog(title: String, description: String, onDeleteClick: () -> Unit) 
 
 
                             Button(
-                                onClick = onDeleteClick,
+                                onClick = onConfirm,
                                 modifier = Modifier.width(140.dp),
                                 shape = RoundedCornerShape(12.dp),
                                 colors = ButtonDefaults.buttonColors(backgroundColor = Blue550)){
@@ -240,7 +218,6 @@ fun DeleteDialog(title: String, description: String, onDeleteClick: () -> Unit) 
                     }
 
                 }
-            }
     }
 }
 
