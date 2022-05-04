@@ -104,14 +104,15 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                     residentsUseCase.openFileUseCase { selectedFile ->
                         CoroutineScope(Dispatchers.Main).launch {
                             _inputState.value = this@with.copy(profileImageErrorMessage = "")
-                            if (selectedFile.canonicalPath.contains("/local_images/")) {
-                                _inputState.value = this@with.copy(imageName = selectedFile.name)
-                            } else {
+                            if (!selectedFile.canonicalPath.contains("/local_images/")) {
                                 _eventFlow.emit(
                                     value = ResidentEventResult.ErrorDialog(
                                         title = "Error",
                                         description = "Move the image to 'local_image' folder to continue."))
+                                return@launch
                             }
+                            _inputState.value = this@with.copy(imageName = "/local_images/${selectedFile.name}")
+
                         }
                     }
                 }
