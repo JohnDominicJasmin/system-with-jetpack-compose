@@ -172,7 +172,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
                 }
 
                 is ResidentEvent.EditResident -> {
-                    _inputState.value = this.copy(isSaveButtonEnable = true, isUpdateButtonEnable = false)
+                    _inputState.value = this.copy(isSaveButtonEnable = false, isUpdateButtonEnable = true)
                     loadResident(resident = event.resident)
                 }
 
@@ -228,7 +228,7 @@ class ResidentViewModel(private val residentsUseCase: ResidentUseCase = Resident
         val profileImage = if(!imageDestination.exists()){
             DrawableResource.NoImageFound.resource
         }else{
-            "/local_images/${resident.imageName}"
+            resident.imageName
         }
 
          _inputState.value = inputState.value.copy(

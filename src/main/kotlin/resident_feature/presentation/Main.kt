@@ -14,7 +14,7 @@ fun main() = application {
 
     Window(
         onCloseRequest = ::exitApplication,
-        title = "Barangay System",
+        title = "Barangay Management System",
         resizable = true,
         state = rememberWindowState(placement = WindowPlacement.Maximized)) {
 

@@ -15,6 +15,6 @@ object Constants {
     const val USER_INPUT_MINIMUM_NUMBER_OF_CHARACTERS = 3
     const val NUMBER_OF_CHARACTERS_CONTACT_NUMBER = 11
     val SELECTED_IMAGE_PATH_DESTINATION =
-        if (System.getProperty("os.name") == "Linux") "src/main/resources/local_images/" else "src\\main\\resources\\local_images\\"
+        if (System.getProperty("os.name") == "Linux") "src/main/resources/" else "src\\main\\resources\\"
 
 }
